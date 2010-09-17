@@ -104,18 +104,18 @@ AC_ARG_WITH([pdf-toc],
 	[ FO_TOC="/set toc,title /book toc,title /article nop" ])
 AC_SUBST(FO_TOC)
 
-AC_ARG_WITH([pdf-title-font],
-    [AS_HELP_STRING([--with-pdf-title-font=NAME],
-       [title font for PDF output (default serif)])],
+AC_ARG_WITH([pdf-body-font],
+    [AS_HELP_STRING([--with-pdf-body-font=NAME],
+       [body font for PDF output (default serif)])],
 	[ FO_BODY_FONT_FAMILY="$withval" ],
 	[ FO_BODY_FONT_FAMILY="serif" ])
 AC_SUBST(FO_BODY_FONT_FAMILY)
 
-AC_ARG_WITH([pdf-body-font],
-    [AS_HELP_STRING([--with-pdf-body-font=NAME],
-       [body font for PDF output (default serif)])],
+AC_ARG_WITH([pdf-title-font],
+    [AS_HELP_STRING([--with-pdf-title-font=NAME],
+       [title font for PDF output (default: same as body font)])],
 	[ FO_TITLE_FONT_FAMILY="$withval" ],
-	[ FO_TITLE_FONT_FAMILY="serif" ])
+	[ FO_TITLE_FONT_FAMILY="$FO_BODY_FONT_FAMILY" ])
 AC_SUBST(FO_TITLE_FONT_FAMILY)
 
 AC_ARG_WITH([pdf-paper-size],
