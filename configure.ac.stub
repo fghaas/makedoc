@@ -147,6 +147,3 @@ AC_SUBST(XSLTPROC_PROFILING_OPTIONS)
 ## random vars
 
 ## do subst
-AC_CONFIG_FILES([Makefile])
-
-AC_OUTPUT
