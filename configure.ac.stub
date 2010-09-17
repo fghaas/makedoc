@@ -42,6 +42,13 @@ if test -z $FOP; then
 fi
 AM_CONDITIONAL([RENDER_PDF], [ test -n $FOP ])
 
+dnl fop-ttfreader -- for creating font metrics files from TTF
+AC_CHECK_PROGS([FOP_TTFREADER], [fop-ttfreader])
+if test -z $FOP_TTFREADER; then
+	AC_MSG_WARN([fop-ttfreader not found, cannot generate font metrics files from TTF])
+fi
+AM_CONDITIONAL([FONT_METRICS_TTF], [ test -n $FOP_TTFREADER ])
+
 dnl Inkscape -- for rasterizing PNGs
 AC_CHECK_PROGS([INKSCAPE], [inkscape])
 if test -z $INKSCAPE; then
