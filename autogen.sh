@@ -10,6 +10,7 @@ AC_OUTPUT
 EOF
 
 mkdir -p m4
+aclocal
 automake --add-missing --include-deps --copy
 autoconf
 echo Now run ./configure
