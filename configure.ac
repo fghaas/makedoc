@@ -1,0 +1,152 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ([2.63])
+AC_INIT([makedoc], [0.1], [florian@linbit.com])
+AM_INIT_AUTOMAKE
+
+AC_CONFIG_MACRO_DIR([m4])
+
+AC_CANONICAL_HOST
+
+AC_LANG([C])
+
+# Checks for programs.
+AC_PROG_INSTALL
+AC_PROG_MAKE_SET
+AC_PROG_SED
+
+AC_CHECK_PROGS([XSLTPROC], [xsltproc])
+if test -z $XSLTPROC; then
+	AC_MSG_ERROR([xsltproc not found, cannot transform XML])
+fi
+
+dnl xmllint -- for XML validation
+AC_CHECK_PROGS([XMLLINT], [xmllint])
+if test -z $XMLLINT; then
+	AC_MSG_WARN([xmllint not found, cannot validate XML])
+fi
+AM_CONDITIONAL([VALIDATE], [ test -n $XMLLINT ])
+
+dnl asciidoc -- for generating DocBook XML from asciidoc
+AC_CHECK_PROGS([ASCIIDOC], [asciidoc])
+if test -z $ASCIIDOC; then
+	AC_MSG_WARN([asciidoc not found, cannot build from asciidoc sources])
+fi
+AM_CONDITIONAL([ASCIIDOC_SUPPORT], [ test -n $ASCIIDOC ])
+
+dnl FOP -- for rendering FO as PDF
+AC_CHECK_PROGS([FOP], [fop])
+if test -z $FOP; then
+	AC_MSG_WARN([fop not found, cannot render PDF])
+fi
+AM_CONDITIONAL([RENDER_PDF], [ test -n $FOP ])
+
+dnl Inkscape -- for rasterizing PNGs
+AC_CHECK_PROGS([INKSCAPE], [inkscape])
+if test -z $INKSCAPE; then
+	AC_MSG_WARN([inkscape not found, cannot rasterize SVG graphics])
+fi
+AM_CONDITIONAL([RENDER_SVG], [ test -n $INKSCAPE ])
+
+dnl mathmlsvg -- for generating SVG from MML
+AC_CHECK_PROGS([MATHMLSVG], [mathmlsvg])
+if test -z $INKSCAPE; then
+	AC_MSG_WARN([mathmlsvg not found, cannot generate SVG graphics from MML])
+fi
+AM_CONDITIONAL([RENDER_MML], [ test -n $MATHMLSVG ])
+
+# Checks for libraries.
+
+# Checks for header files.
+
+# Checks for typedefs, structures, and compiler characteristics.
+
+# Checks for library functions.
+
+# local options
+AC_ARG_ENABLE([profiling],
+	[AS_HELP_STRING([--enable-profiling], [enable document profiling (default: no)])])
+AM_CONDITIONAL(PROFILING, [ test x$enable_profiling = "xyes" ])
+
+AC_ARG_WITH([stylesheets],
+    [AS_HELP_STRING([--with-stylesheets=URL],
+       [location of the DocBook XSL distribution])],
+	[ STYLESHEET_PREFIX="$withval" ],
+	[ STYLESHEET_PREFIX="http://docbook.sourceforge.net/release/xsl/current" ])
+AC_SUBST(STYLESHEET_PREFIX)
+
+AC_ARG_WITH([ulink-target],
+    [AS_HELP_STRING([--with-ulink-target=NAME],
+       [target frame for external links in HTML output (default _blank)])],
+	[ ULINK_TARGET="$withval" ],
+	[ ULINK_TARGET="_blank" ])
+AC_SUBST(ULINK_TARGET)
+
+AC_ARG_WITH([fop-config],
+    [AS_HELP_STRING([--with-fop-config=PATH],
+       [location of the FOP configuration file (default fop-config.xml)])],
+	[ FOP_CONFIG="$withval" ],
+	[ FOP_CONFIG="fop-config.xml" ])
+AC_SUBST(FOP_CONFIG)
+
+AC_ARG_WITH([pdf-toc],
+    [AS_HELP_STRING([--with-pdf-toc=STRING],
+       [control ToC generation for PDF output (see http://docbook.sourceforge.net/release/xsl/current/doc/html/generate.toc.html for supported values)])],
+	[ FO_TOC="$withval" ],
+	[ FO_TOC="/set toc,title /book toc,title /article nop" ])
+AC_SUBST(FO_TOC)
+
+AC_ARG_WITH([pdf-title-font],
+    [AS_HELP_STRING([--with-pdf-title-font=NAME],
+       [title font for PDF output (default serif)])],
+	[ FO_BODY_FONT_FAMILY="$withval" ],
+	[ FO_BODY_FONT_FAMILY="serif" ])
+AC_SUBST(FO_BODY_FONT_FAMILY)
+
+AC_ARG_WITH([pdf-body-font],
+    [AS_HELP_STRING([--with-pdf-body-font=NAME],
+       [body font for PDF output (default serif)])],
+	[ FO_TITLE_FONT_FAMILY="$withval" ],
+	[ FO_TITLE_FONT_FAMILY="serif" ])
+AC_SUBST(FO_TITLE_FONT_FAMILY)
+
+AC_ARG_WITH([pdf-paper-size],
+    [AS_HELP_STRING([--with-pdf-paper-size=SIZE],
+       [set paper size for PDF output (default A4)])],
+	[ PAPER_SIZE="$withval" ],
+	[ PAPER_SIZE="A4" ])
+AC_SUBST(PAPER_SIZE)
+
+dnl DocBook document profiling options
+AC_ARG_WITH([profile-arch],
+    [AS_HELP_STRING([--with-profile-arch=NAME],
+       [set architecture (for document profiling)])],
+	[ XSLTPROC_PROFILING_OPTIONS="--stringparam profile.arch $withval" ])
+AC_ARG_WITH([profile-condition],
+    [AS_HELP_STRING([--with-profile-condition=NAME],
+       [set condition (for document profiling)])],
+	[ XSLTPROC_PROFILING_OPTIONS="$XSLTPROC_PROFILING_OPTIONS --stringparam profile.condition $withval" ])
+AC_ARG_WITH([profile-userlevel],
+    [AS_HELP_STRING([--with-profile-userlevel=NAME],
+       [set user level (for document profiling)])],
+	[ XSLTPROC_PROFILING_OPTIONS="$XSLTPROC_PROFILING_OPTIONS --stringparam profile.userlevel $withval" ])
+AC_ARG_WITH([profile-vendor],
+    [AS_HELP_STRING([--with-profile-vendor=NAME],
+       [set vendor (for document profiling)])],
+	[ XSLTPROC_PROFILING_OPTIONS="$XSLTPROC_PROFILING_OPTIONS --stringparam profile.vendor $withval" ])
+AC_ARG_WITH([profile-status],
+    [AS_HELP_STRING([--with-profile-status=NAME],
+       [set vendor (for document profiling)])],
+	[ XSLTPROC_PROFILING_OPTIONS="$XSLTPROC_PROFILING_OPTIONS --stringparam profile.status $withval" ],
+	[ XSLTPROC_PROFILING_OPTIONS="$XSLTPROC_PROFILING_OPTIONS --stringparam profile.status current" ])
+
+AC_SUBST(XSLTPROC_PROFILING_OPTIONS)
+
+
+## random vars
+
+## do subst
+AC_CONFIG_FILES([Makefile])
+
+AC_OUTPUT
