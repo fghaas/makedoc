@@ -27,9 +27,9 @@ TITLEPAGE_STYLESHEET ?= $(STYLESHEET_PREFIX)/template/titlepage.xsl
 # For PDF output, define some variables to be used for
 # FO-to-PDF transformation
 if PROFILING
-FO_STYLESHEET ?= $(abs_top_srcdir)/stylesheets/profile-fo.xsl
+FO_STYLESHEET ?= $(abs_srcdir)/stylesheets/profile-fo.xsl
 else
-FO_STYLESHEET ?= $(abs_top_srcdir)/stylesheets/fo.xsl
+FO_STYLESHEET ?= $(abs_srcdir)/stylesheets/fo.xsl
 endif
 
 # xsltproc options for HTML output
@@ -62,7 +62,7 @@ XSLTPROC_FO_OPTIONS =  --xinclude \
  --param fop1.extensions 1 \
  --param tablecolumns.extension 0 \
  --param admon.graphics 1 \
- --stringparam admon.graphics.path $(abs_top_srcdir)/images/ \
+ --stringparam admon.graphics.path $(abs_srcdir)/images/ \
  --stringparam admon.graphics.extension .svg
 if PROFILING
 XSLTPROC_FO_OPTIONS += $(XSLTPROC_PROFILING_OPTIONS)
@@ -82,17 +82,17 @@ endif
 	--stringparam root.filename $* \
 	$(CHUNKED_HTML_STYLESHEET) $< 
 
-%.fo: %.xml $(abs_top_srcdir)/stylesheets/fo-titlepage.xsl
+%.fo: %.xml $(abs_srcdir)/stylesheets/fo-titlepage.xsl
 	$(XSLTPROC) -o $@ \
 	$(XSLTPROC_FO_OPTIONS) \
 	$(FO_STYLESHEET) $<
 
 if RENDER_PDF
 %.pdf: %.fo
-	$(FOP) -c $(abs_top_srcdir)/$(FOP_CONFIG) $< -pdf $@
+	$(FOP) -c $(abs_srcdir)/$(FOP_CONFIG) $< -pdf $@
 
 %.ps: %.fo
-	$(FOP) -c $(abs_top_srcdir)/$(FOP_CONFIG) $< -ps $@
+	$(FOP) -c $(abs_srcdir)/$(FOP_CONFIG) $< -ps $@
 endif
 
 # Title page layout (currently only used for FOP-generated PDF)
