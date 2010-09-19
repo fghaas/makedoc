@@ -59,13 +59,15 @@ XSLTPROC_FO_OPTIONS =  --xinclude \
  --param section.label.includes.component.label 1 \
  --stringparam generate.toc "$(FO_TOC)" \
  --param use.extensions 1 \
- --param fop1.extensions 1 \
  --param tablecolumns.extension 0 \
  --param admon.graphics 1 \
  --stringparam admon.graphics.path $(abs_srcdir)/images/ \
  --stringparam admon.graphics.extension .svg
 if PROFILING
 XSLTPROC_FO_OPTIONS += $(XSLTPROC_PROFILING_OPTIONS)
+endif
+if USE_FOP
+XSLTPROC_FO_OPTIONS += --param fop1.extensions 1
 endif
 
 # XML from asciidoc
@@ -89,10 +91,22 @@ endif
 
 if RENDER_PDF
 %.pdf: %.fo
+if USE_FOP
 	$(FOP) -c $(abs_srcdir)/$(FOP_CONFIG) $< -pdf $@
+endif
+if USE_XMLROFF
+	$(XMLROFF) --format=pdf -o $@ $<
+endif
+endif
 
+if RENDER_PS
 %.ps: %.fo
+if USE_FOP
 	$(FOP) -c $(abs_srcdir)/$(FOP_CONFIG) $< -ps $@
+endif
+if USE_XMLROFF
+	$(XMLROFF) --format=ps -o $@ $<
+endif
 endif
 
 if RENDER_ODT

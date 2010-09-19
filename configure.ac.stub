@@ -30,12 +30,14 @@ AC_ARG_WITH([ulink-target],
 	[ ULINK_TARGET="_blank" ])
 AC_SUBST(ULINK_TARGET)
 
-AC_ARG_WITH([fop-config],
-    [AS_HELP_STRING([--with-fop-config=PATH],
-       [location of the FOP configuration file (default fop-config.xml)])],
-	[ FOP_CONFIG="$withval" ],
-	[ FOP_CONFIG="fop-config.xml" ])
-AC_SUBST(FOP_CONFIG)
+AC_ARG_WITH([pdf-formatter],
+    [AS_HELP_STRING([--with-pdf-formatter=fop|xmlroff],
+       [use this formatter for rendering FO to PDF (default: fop)])],
+	[ PDF_FORMATTER="$withval" ],
+	[ PDF_FORMATTER="fop" ])
+AC_SUBST(PDF_FORMATTER)
+AM_CONDITIONAL(USE_FOP, [test "x$PDF_FORMATTER" = "xfop"])
+AM_CONDITIONAL(USE_XMLROFF, [test "x$PDF_FORMATTER" = "xxmlroff"])
 
 AC_ARG_WITH([pdf-toc],
     [AS_HELP_STRING([--with-pdf-toc=STRING],
@@ -64,6 +66,13 @@ AC_ARG_WITH([pdf-paper-size],
 	[ PAPER_SIZE="$withval" ],
 	[ PAPER_SIZE="A4" ])
 AC_SUBST(PAPER_SIZE)
+
+AC_ARG_WITH([fop-config],
+    [AS_HELP_STRING([--with-fop-config=PATH],
+       [location of the FOP configuration file (default fop-config.xml)])],
+	[ FOP_CONFIG="$withval" ],
+	[ FOP_CONFIG="fop-config.xml" ])
+AC_SUBST(FOP_CONFIG)
 
 dnl DocBook document profiling options
 AC_ARG_WITH([profile-arch],
@@ -115,12 +124,21 @@ if test -z $ASCIIDOC; then
 fi
 AM_CONDITIONAL([ASCIIDOC_SUPPORT], [ test -n $ASCIIDOC ])
 
-dnl FOP -- for rendering FO as PDF
-AC_CHECK_PROGS([FOP], [fop])
-if test -z $FOP; then
-	AC_MSG_WARN([fop not found, cannot render PDF])
-fi
-AM_CONDITIONAL([RENDER_PDF], [ test -n $FOP ])
+case "x$PDF_FORMATTER" in
+     "xfop")
+	AC_CHECK_PROGS([FOP], [fop])
+	if test -z $FOP; then
+	   AC_MSG_WARN([fop not found, cannot render PDF])
+	fi
+	;;
+     "xxmlroff")
+	AC_CHECK_PROGS([XMLROFF], [xmlroff])
+	if test -z $XMLROFF; then
+	   AC_MSG_WARN([xmlroff not found, cannot render PDF])
+	fi
+esac
+AM_CONDITIONAL([RENDER_PDF], [ test -n $FOP || test -n $XMLROFF ])
+AM_CONDITIONAL([RENDER_PS], [ test -n $FOP || test -n $XMLROFF ])
 
 dnl fop-ttfreader -- for creating font metrics files from TTF
 AC_CHECK_PROGS([FOP_TTFREADER], [fop-ttfreader])
