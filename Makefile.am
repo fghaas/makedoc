@@ -95,6 +95,11 @@ if RENDER_PDF
 	$(FOP) -c $(abs_srcdir)/$(FOP_CONFIG) $< -ps $@
 endif
 
+if RENDER_ODT
+%.odt: %.xml
+	$(DOCBOOK2ODF) --force $< --output-file $@
+endif
+
 # Title page layout (currently only used for FOP-generated PDF)
 %-titlepage.xsl: %-titlepage.xml
 	$(XSLTPROC) -o $@ \

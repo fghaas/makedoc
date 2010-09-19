@@ -49,6 +49,13 @@ if test -z $FOP_TTFREADER; then
 fi
 AM_CONDITIONAL([FONT_METRICS_TTF], [ test -n $FOP_TTFREADER ])
 
+dnl docbook2xml -- for creating OpenDocument Text from DocBook
+AC_CHECK_PROGS([DOCBOOK2ODF], [docbook2odf])
+if test -z $DOCBOOK2ODF; then
+	AC_MSG_WARN([docbook2odf not found, cannot render OpenDocument Text])
+fi
+AM_CONDITIONAL([RENDER_ODT], [ test -n $DOCBOOK2ODF ])
+
 dnl Inkscape -- for rasterizing PNGs
 AC_CHECK_PROGS([INKSCAPE], [inkscape])
 if test -z $INKSCAPE; then
