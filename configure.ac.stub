@@ -124,14 +124,14 @@ AC_CHECK_PROGS([XMLLINT], [xmllint])
 if test -z $XMLLINT; then
 	AC_MSG_WARN([xmllint not found, cannot validate XML])
 fi
-AM_CONDITIONAL([VALIDATE], [ test -n $XMLLINT ])
+AM_CONDITIONAL([VALIDATE], [ test -n "$XMLLINT"])
 
 dnl asciidoc -- for generating DocBook XML from asciidoc
 AC_CHECK_PROGS([ASCIIDOC], [asciidoc])
 if test -z $ASCIIDOC; then
 	AC_MSG_WARN([asciidoc not found, cannot build from asciidoc sources])
 fi
-AM_CONDITIONAL([ASCIIDOC_SUPPORT], [ test -n $ASCIIDOC ])
+AM_CONDITIONAL([ASCIIDOC_SUPPORT], [ test -n "$ASCIIDOC" ])
 
 case "x$PDF_FORMATTER" in
      "xfop")
@@ -143,7 +143,7 @@ case "x$PDF_FORMATTER" in
 	if test -z $FOP_TTFREADER; then
 	   AC_MSG_WARN([fop-ttfreader not found, cannot generate font metrics files from TTF])
 	fi
-	AM_CONDITIONAL([FONT_METRICS_TTF], [ test -n $FOP_TTFREADER ])
+	AM_CONDITIONAL([FONT_METRICS_TTF], [ test -n "$FOP_TTFREADER" ])
 	;;
      "xxmlroff")
 	AC_CHECK_PROGS([XMLROFF], [xmlroff])
@@ -151,15 +151,15 @@ case "x$PDF_FORMATTER" in
 	   AC_MSG_WARN([xmlroff not found, cannot render PDF])
 	fi
 esac
-AM_CONDITIONAL([RENDER_PDF], [ test -n $FOP || test -n $XMLROFF ])
-AM_CONDITIONAL([RENDER_PS], [ test -n $FOP || test -n $XMLROFF ])
+AM_CONDITIONAL([RENDER_PDF], [ test -n "$FOP" || test -n "$XMLROFF" ])
+AM_CONDITIONAL([RENDER_PS], [ test -n "$FOP" || test -n "$XMLROFF" ])
 
 dnl docbook2xml -- for creating OpenDocument Text from DocBook
 AC_CHECK_PROGS([DOCBOOK2ODF], [docbook2odf])
 if test -z $DOCBOOK2ODF; then
 	AC_MSG_WARN([docbook2odf not found, cannot render OpenDocument Text])
 fi
-AM_CONDITIONAL([RENDER_ODT], [ test -n $DOCBOOK2ODF ])
+AM_CONDITIONAL([RENDER_ODT], [ test -n "$DOCBOOK2ODF" ])
 
 dnl Inkscape or rsvg -- for rasterizing PNGs from SVG
 case "x$SVG_RASTERIZER" in
@@ -176,14 +176,14 @@ case "x$SVG_RASTERIZER" in
 	fi
 	;;
 esac
-AM_CONDITIONAL([RENDER_SVG], [ test -n $INKSCAPE || test -n $RSVG ])
+AM_CONDITIONAL([RENDER_SVG], [ test -n "$INKSCAPE" || test -n "$RSVG" ])
 
 dnl mathmlsvg -- for generating SVG from MML
 AC_CHECK_PROGS([MATHMLSVG], [mathmlsvg])
 if test -z $MATHMLSVG; then
 	AC_MSG_WARN([mathmlsvg not found, cannot generate SVG graphics from MML])
 fi
-AM_CONDITIONAL([RENDER_MML], [ test -n $MATHMLSVG ])
+AM_CONDITIONAL([RENDER_MML], [ test -n "$MATHMLSVG" ])
 
 # Checks for libraries.
 
