@@ -95,7 +95,7 @@ if USE_FOP
 	$(FOP) -c $(abs_srcdir)/$(FOP_CONFIG) $< -pdf $@
 endif
 if USE_XMLROFF
-	$(XMLROFF) --format=pdf -o $@ $<
+	$(XMLROFF) --backend=$(XMLROFF_BACKEND) --format=pdf -o $@ $<
 endif
 endif
 
@@ -105,7 +105,7 @@ if USE_FOP
 	$(FOP) -c $(abs_srcdir)/$(FOP_CONFIG) $< -ps $@
 endif
 if USE_XMLROFF
-	$(XMLROFF) --format=ps -o $@ $<
+	$(XMLROFF) --backend=$(XMLROFF_BACKEND) --format=ps -o $@ $<
 endif
 endif
 

@@ -74,6 +74,13 @@ AC_ARG_WITH([fop-config],
 	[ FOP_CONFIG="fop-config.xml" ])
 AC_SUBST(FOP_CONFIG)
 
+AC_ARG_WITH([xmlroff-backend],
+    [AS_HELP_STRING([--with-xmlroff-backend=gp|cairo],
+       [use this xmlroff backend for rendering FO to PDF (default gp)])],
+	[ XMLROFF_BACKEND="$withval" ],
+	[ XMLROFF_BACKEND="gp" ])
+AC_SUBST(XMLROFF_BACKEND)
+
 AC_ARG_WITH([svg-rasterizer],
     [AS_HELP_STRING([--with-svg-rasterizer=inkscape|rsvg],
        [use this rasterizer for rendering SVG to PNG (default: inkscape)])],
@@ -150,6 +157,7 @@ case "x$PDF_FORMATTER" in
 	   AC_MSG_WARN([xmlroff not found, cannot render PDF])
 	fi
 esac
+AM_CONDITIONAL([FONT_METRICS_TTF], [ test -n "$FOP_TTFREADER" ])
 AM_CONDITIONAL([RENDER_PDF], [ test -n "$FOP" || test -n "$XMLROFF" ])
 AM_CONDITIONAL([RENDER_PS], [ test -n "$FOP" || test -n "$XMLROFF" ])
 
