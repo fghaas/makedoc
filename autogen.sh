@@ -13,4 +13,4 @@ mkdir -p m4
 aclocal
 automake --add-missing --include-deps --copy -Wno-portability
 autoconf
-echo Now run ./configure
+echo "Now run ./configure (add --help for supported configure options)"
