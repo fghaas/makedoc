@@ -133,13 +133,29 @@ endif
 # n(eeded for HTML output)
 if RENDER_SVG
 %.png: %.svg
+if USE_INKSCAPE
 	$(INKSCAPE) --file=$< --export-dpi=90 --export-area-drawing --export-png=$@
+endif
+if USE_RSVG
+	$(RSVG) --dpi-x=90 --dpi-y=90 --format=png $< $@
+endif
 
 %-small.png: %.svg
+if USE_INKSCAPE
 	$(INKSCAPE) --file=$< --export-dpi=45 --export-area-drawing --export-png=$@
+endif
+if USE_RSVG
+	$(RSVG) --dpi-x=45 --dpi-y=45 --format=png $< $@
+endif
+
 
 %-large.png: %.svg
+if USE_INKSCAPE
 	$(INKSCAPE) --file=$< --export-dpi=180 --export-area-drawing --export-png=$@
+endif
+if USE_RSVG
+	$(RSVG) --dpi-x=180 --dpi-y=180 --format=png $< $@
+endif
 endif
 
 builddate:

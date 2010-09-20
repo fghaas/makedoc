@@ -74,6 +74,15 @@ AC_ARG_WITH([fop-config],
 	[ FOP_CONFIG="fop-config.xml" ])
 AC_SUBST(FOP_CONFIG)
 
+AC_ARG_WITH([svg-rasterizer],
+    [AS_HELP_STRING([--with-svg-rasterizer=inkscape|rsvg],
+       [use this rasterizer for rendering SVG to PNG (default: inkscape)])],
+	[ SVG_RASTERIZER="$withval" ],
+	[ SVG_RASTERIZER="inkscape" ])
+AC_SUBST(SVG_RASTERIZER)
+AM_CONDITIONAL(USE_INKSCAPE, [test "x$SVG_RASTERIZER" = "xinkscape"])
+AM_CONDITIONAL(USE_RSVG, [test "x$SVG_RASTERIZER" = "xrsvg"])
+
 dnl DocBook document profiling options
 AC_ARG_WITH([profile-arch],
     [AS_HELP_STRING([--with-profile-arch=NAME],
@@ -154,12 +163,22 @@ if test -z $DOCBOOK2ODF; then
 fi
 AM_CONDITIONAL([RENDER_ODT], [ test -n $DOCBOOK2ODF ])
 
-dnl Inkscape -- for rasterizing PNGs
-AC_CHECK_PROGS([INKSCAPE], [inkscape])
-if test -z $INKSCAPE; then
-	AC_MSG_WARN([inkscape not found, cannot rasterize SVG graphics])
-fi
-AM_CONDITIONAL([RENDER_SVG], [ test -n $INKSCAPE ])
+dnl Inkscape or rsvg -- for rasterizing PNGs from SVG
+case "x$SVG_RASTERIZER" in
+     "xinkscape")
+	AC_CHECK_PROGS([INKSCAPE], [inkscape])
+	if test -z $INKSCAPE; then
+	   AC_MSG_WARN([inkscape not found, cannot rasterize SVG graphics])
+	fi
+	;;
+     "xrsvg")
+	AC_CHECK_PROGS([RSVG], [rsvg])
+	if test -z $RSVG; then
+	   AC_MSG_WARN([rsvg not found, cannot rasterize SVG graphics])
+	fi
+	;;
+esac
+AM_CONDITIONAL([RENDER_SVG], [ test -n $INKSCAPE || test -n $RSVG ])
 
 dnl mathmlsvg -- for generating SVG from MML
 AC_CHECK_PROGS([MATHMLSVG], [mathmlsvg])
