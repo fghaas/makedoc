@@ -197,4 +197,37 @@ AM_CONDITIONAL([RENDER_MML], [ test -n $MATHMLSVG ])
 
 ## random vars
 
+## Feature summary
+AC_MSG_NOTICE()
+AC_MSG_NOTICE([Feature summary])
+AC_MSG_NOTICE([===============])
+AM_COND_IF([RENDER_PDF],
+           AC_MSG_NOTICE([PDF output is enabled]),
+	   AC_MSG_NOTICE([PDF output is not enabled (install fop or xmlroff)]))
+AM_COND_IF([RENDER_PS],
+           AC_MSG_NOTICE([PostScript output is enabled]),
+	   AC_MSG_NOTICE([PostScript output is not enabled (install fop or xmlroff)]))
+AM_COND_IF([USE_FOP],
+           AC_MSG_NOTICE([Using FOP for PDF/PS output]))
+AM_COND_IF([USE_XMLROFF],
+           AC_MSG_NOTICE([Using xmlroff for PDF/PS output]))
+AM_COND_IF([ASCIIDOC_SUPPORT],
+           AC_MSG_NOTICE([AsciiDoc input is enabled]),
+	   AC_MSG_NOTICE([AsciiDoc input is not enabled (install asciidoc)]))
+AM_COND_IF([RENDER_ODT],
+           AC_MSG_NOTICE([OpenDocument Text output is enabled]),
+	   AC_MSG_NOTICE([OpenDocument Text output is not enabled (install docbook2odf)]))
+AM_COND_IF([RENDER_SVG],
+           AC_MSG_NOTICE([SVG rasterization is enabled]),
+	   AC_MSG_NOTICE([SVG rasterization is not enabled (install inkscape or rsvg)]))
+AM_COND_IF([USE_INKSCAPE],
+           AC_MSG_NOTICE([Using inkscape for SVG rasterization]))
+AM_COND_IF([USE_RSVG],
+           AC_MSG_NOTICE([Using rsvg for SVG rasterization]))
+AM_COND_IF([RENDER_MML],
+           AC_MSG_NOTICE([MathML rendering is enabled]),
+	   AC_MSG_NOTICE([MathML rendering is not enabled (install mathmlsvg)]))
+AC_MSG_NOTICE()
+
+
 ## do subst
