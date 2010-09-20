@@ -163,7 +163,7 @@ AM_CONDITIONAL([RENDER_SVG], [ test -n $INKSCAPE ])
 
 dnl mathmlsvg -- for generating SVG from MML
 AC_CHECK_PROGS([MATHMLSVG], [mathmlsvg])
-if test -z $INKSCAPE; then
+if test -z $MATHMLSVG; then
 	AC_MSG_WARN([mathmlsvg not found, cannot generate SVG graphics from MML])
 fi
 AM_CONDITIONAL([RENDER_MML], [ test -n $MATHMLSVG ])
