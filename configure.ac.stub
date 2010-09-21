@@ -12,8 +12,29 @@ AC_CANONICAL_HOST
 AC_LANG([C])
 
 # local options
+AC_ARG_ENABLE([pdf],
+	[AS_HELP_STRING([--disable-pdf],
+			[disable PDF output (default: enabled)])])
+AM_CONDITIONAL(ENABLE_PDF, [ test x$enable_pdf != "xno" ])
+
+AC_ARG_ENABLE([odf],
+	[AS_HELP_STRING([--disable-odf],
+			[disable OpenDocument Format output (default: enabled)])])
+AM_CONDITIONAL(ENABLE_ODF, [ test x$enable_odf != "xno" ])
+
+AC_ARG_ENABLE([asciidoc],
+	[AS_HELP_STRING([--disable-asciidoc],
+			[disable AsciiDoc input (default: enabled)])])
+AM_CONDITIONAL(ENABLE_ASCIIDOC, [ test x$enable_asciidoc != "xno" ])
+
+AC_ARG_ENABLE([mathml],
+	[AS_HELP_STRING([--disable-mathml],
+			[disable MathML support (default: enabled)])])
+AM_CONDITIONAL(ENABLE_MATHML, [ test x$enable_mathml != "xno" ])
+
 AC_ARG_ENABLE([profiling],
-	[AS_HELP_STRING([--enable-profiling], [enable document profiling (default: no)])])
+	[AS_HELP_STRING([--enable-profiling],
+			[enable document profiling (default: disabled)])])
 AM_CONDITIONAL(PROFILING, [ test x$enable_profiling = "xyes" ])
 
 AC_ARG_WITH([stylesheets],
@@ -36,8 +57,8 @@ AC_ARG_WITH([pdf-formatter],
 	[ PDF_FORMATTER="$withval" ],
 	[ PDF_FORMATTER="fop" ])
 AC_SUBST(PDF_FORMATTER)
-AM_CONDITIONAL(USE_FOP, [test "x$PDF_FORMATTER" = "xfop"])
-AM_CONDITIONAL(USE_XMLROFF, [test "x$PDF_FORMATTER" = "xxmlroff"])
+AM_CONDITIONAL(USE_FOP, [test "x$enable_pdf" != "xno" && test "x$PDF_FORMATTER" = "xfop"])
+AM_CONDITIONAL(USE_XMLROFF, [test "x$enable_pdf" != "xno" && test "x$PDF_FORMATTER" = "xxmlroff"])
 
 AC_ARG_WITH([pdf-toc],
     [AS_HELP_STRING([--with-pdf-toc=STRING],
@@ -134,13 +155,16 @@ fi
 AM_CONDITIONAL([VALIDATE], [ test -n "$XMLLINT"])
 
 dnl asciidoc -- for generating DocBook XML from asciidoc
-AC_CHECK_PROGS([ASCIIDOC], [asciidoc])
-if test -z $ASCIIDOC; then
+if test "x$enable_asciidoc" != "xno"; then
+   AC_CHECK_PROGS([ASCIIDOC], [asciidoc])
+   if test -z $ASCIIDOC; then
 	AC_MSG_WARN([asciidoc not found, cannot build from asciidoc sources])
+   fi
 fi
 AM_CONDITIONAL([ASCIIDOC_SUPPORT], [ test -n "$ASCIIDOC" ])
 
-case "x$PDF_FORMATTER" in
+if test "x$enable_pdf" != "xno"; then
+   case "x$PDF_FORMATTER" in
      "xfop")
 	AC_CHECK_PROGS([FOP], [fop])
 	if test -z $FOP; then
@@ -156,15 +180,18 @@ case "x$PDF_FORMATTER" in
 	if test -z $XMLROFF; then
 	   AC_MSG_WARN([xmlroff not found, cannot render PDF])
 	fi
-esac
+   esac
+fi
 AM_CONDITIONAL([FONT_METRICS_TTF], [ test -n "$FOP_TTFREADER" ])
 AM_CONDITIONAL([RENDER_PDF], [ test -n "$FOP" || test -n "$XMLROFF" ])
 AM_CONDITIONAL([RENDER_PS], [ test -n "$FOP" || test -n "$XMLROFF" ])
 
 dnl docbook2xml -- for creating OpenDocument Text from DocBook
-AC_CHECK_PROGS([DOCBOOK2ODF], [docbook2odf])
-if test -z $DOCBOOK2ODF; then
-	AC_MSG_WARN([docbook2odf not found, cannot render OpenDocument Text])
+if test "x$enable_odf" != "xno"; then
+   AC_CHECK_PROGS([DOCBOOK2ODF], [docbook2odf])
+   if test -z $DOCBOOK2ODF; then
+      AC_MSG_WARN([docbook2odf not found, cannot render OpenDocument Text])
+   fi
 fi
 AM_CONDITIONAL([RENDER_ODT], [ test -n "$DOCBOOK2ODF" ])
 
@@ -186,9 +213,11 @@ esac
 AM_CONDITIONAL([RENDER_SVG], [ test -n "$INKSCAPE" || test -n "$RSVG" ])
 
 dnl mathmlsvg -- for generating SVG from MML
-AC_CHECK_PROGS([MATHMLSVG], [mathmlsvg])
-if test -z $MATHMLSVG; then
-	AC_MSG_WARN([mathmlsvg not found, cannot generate SVG graphics from MML])
+if test "x$enable_mathml" != "xno"; then
+   AC_CHECK_PROGS([MATHMLSVG], [mathmlsvg])
+   if test -z $MATHMLSVG; then
+      AC_MSG_WARN([mathmlsvg not found, cannot generate SVG graphics from MML])
+   fi
 fi
 AM_CONDITIONAL([RENDER_MML], [ test -n "$MATHMLSVG" ])
 
