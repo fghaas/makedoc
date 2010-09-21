@@ -130,7 +130,7 @@ AC_ARG_WITH([profile-vendor],
 	[ XSLTPROC_PROFILING_OPTIONS="$XSLTPROC_PROFILING_OPTIONS --stringparam profile.vendor $withval" ])
 AC_ARG_WITH([profile-status],
     [AS_HELP_STRING([--with-profile-status=NAME],
-       [set vendor (for document profiling)])],
+       [set document status (for document profiling, default current)])],
 	[ XSLTPROC_PROFILING_OPTIONS="$XSLTPROC_PROFILING_OPTIONS --stringparam profile.status $withval" ],
 	[ XSLTPROC_PROFILING_OPTIONS="$XSLTPROC_PROFILING_OPTIONS --stringparam profile.status current" ])
 
