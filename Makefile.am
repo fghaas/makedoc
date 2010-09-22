@@ -72,7 +72,7 @@ endif
 
 # XML from asciidoc
 if ASCIIDOC_SUPPORT
-%.xml: %.asciidoc
+%.xml: %.$(ASCIIDOC_EXTENSION)
 	$(ASCIIDOC) --out-file=$@ \
 	--backend=docbook --doctype=article $<
 endif

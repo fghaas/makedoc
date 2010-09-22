@@ -44,6 +44,13 @@ AC_ARG_WITH([stylesheets],
 	[ STYLESHEET_PREFIX="http://docbook.sourceforge.net/release/xsl/current" ])
 AC_SUBST(STYLESHEET_PREFIX)
 
+AC_ARG_WITH([asciidoc-extension],
+    [AS_HELP_STRING([--with-asciidoc-extension=NAME],
+       [expect this extension for AsciiDoc filenames (default txt)])],
+	[ ASCIIDOC_EXTENSION="$withval" ],
+	[ ASCIIDOC_EXTENSION="txt" ])
+AC_SUBST(ASCIIDOC_EXTENSION)
+
 AC_ARG_WITH([ulink-target],
     [AS_HELP_STRING([--with-ulink-target=NAME],
        [target frame for external links in HTML output (default _blank)])],
