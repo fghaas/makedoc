@@ -110,7 +110,7 @@ endif
 # FO (from XML)
 if XSLT
 if USE_FO_TITLEPAGE
-%.fo: %.xml $(abs_srcdir)/stylesheets/fo/titlepage.xsl
+%.fo: %.xml stylesheets/fo/titlepage.xsl
 else
 %.fo: %.xml
 endif
@@ -161,12 +161,6 @@ if USE_DBLATEX
 endif
 endif
 
-# Title page layout (currently only used for FOP-generated PDF)
-if USE_FO_TITLEPAGE
-titlepage.xsl: $(FO_TITLEPAGE)
-	$(XSLTPROC) -o $@ \
-	--xinclude $(TITLEPAGE_STYLESHEET) $<
-endif
 #####################################################################
 # Targets for other file types
 #####################################################################
@@ -220,6 +214,13 @@ endif
 #####################################################################
 # Miscellaneous targets
 #####################################################################
+
+# Title page layout (currently only used for FOP-generated PDF)
+if USE_FO_TITLEPAGE
+stylesheets/fo/titlepage.xsl: $(FO_TITLEPAGE)
+	$(XSLTPROC) -o $@ \
+	--xinclude $(TITLEPAGE_STYLESHEET) $<
+endif
 
 # A timestamp file. Holds the date at the time of the invocation
 builddate:
