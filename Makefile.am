@@ -3,12 +3,15 @@
 # to this one. Like so:
 #
 # %: force
-# 	@$(MAKE) -f ../Makefile $@
+# 	@$(MAKE) -f $(top_srcdir)/Makefile $@
 # force: ;
 #
 # That target should go after all other targets you define in your
-# lower-level Makefile. Refer the Makefile in the "users-guide"
-# subdirectory as an example.
+# lower-level Makefile.
+
+#####################################################################
+# Make variables
+#####################################################################
 
 # Paths to Norm Walsh's DocBook XSL stylesheets.  
 # Fetching these from the web on every run is probably dead slow, so
@@ -39,6 +42,10 @@ else
 FO_STYLESHEET ?= $(STYLESHEET_PREFIX)/fo/docbook.xsl
 endif
 endif
+
+#####################################################################
+# Command line option sets for invoked programs
+#####################################################################
 
 # xsltproc options for HTML output
 XSLTPROC_HTML_OPTIONS = --xinclude \
@@ -80,6 +87,10 @@ if USE_FOP
 XSLTPROC_FO_OPTIONS += --param fop1.extensions 1
 endif
 
+#####################################################################
+# Targets for individual document types
+#####################################################################
+
 # XML from asciidoc
 if ASCIIDOC_SUPPORT
 %.xml: %.$(ASCIIDOC_EXTENSION)
@@ -87,7 +98,7 @@ if ASCIIDOC_SUPPORT
 	--backend=docbook --doctype=article $<
 endif
 
-# Multiple-page HTML
+# Multiple-page HTML (from XML)
 if XSLT
 %.html: %.xml
 	$(XSLTPROC) \
@@ -96,6 +107,7 @@ if XSLT
 	$(CHUNKED_HTML_STYLESHEET) $< 
 endif
 
+# FO (from XML)
 if XSLT
 if USE_FO_TITLEPAGE
 %.fo: %.xml $(abs_srcdir)/stylesheets/fo/titlepage.xsl
@@ -107,6 +119,13 @@ endif
 	$(FO_STYLESHEET) $<
 endif
 
+# OpenDocument Text (from XML)
+if RENDER_ODT
+%.odt: %.xml
+	$(DOCBOOK2ODF) --force $< --output-file $@
+endif
+
+# PDF (from FO)
 if RENDER_PDF
 if USE_DBLATEX
 %.pdf: %.xml
@@ -124,6 +143,7 @@ if USE_DBLATEX
 endif
 endif
 
+# PostScript (from FO)
 if RENDER_PS
 if USE_DBLATEX
 %.ps: %.xml
@@ -141,17 +161,15 @@ if USE_DBLATEX
 endif
 endif
 
-if RENDER_ODT
-%.odt: %.xml
-	$(DOCBOOK2ODF) --force $< --output-file $@
-endif
-
 # Title page layout (currently only used for FOP-generated PDF)
 if USE_FO_TITLEPAGE
 titlepage.xsl: $(FO_TITLEPAGE)
 	$(XSLTPROC) -o $@ \
 	--xinclude $(TITLEPAGE_STYLESHEET) $<
 endif
+#####################################################################
+# Targets for other file types
+#####################################################################
 
 # Generated images: SVG from MathML
 # (needed for HTML output, and PDF if using FOP)
@@ -180,6 +198,7 @@ if USE_RSVG
 	$(RSVG) --dpi-x=90 --dpi-y=90 --format=png $< $@
 endif
 
+# Half-size SVG (from PNG)
 %-small.png: %.svg
 if USE_INKSCAPE
 	$(INKSCAPE) --file=$< --export-dpi=45 --export-area-drawing --export-png=$@
@@ -188,7 +207,7 @@ if USE_RSVG
 	$(RSVG) --dpi-x=45 --dpi-y=45 --format=png $< $@
 endif
 
-
+# Double-size SVG (from PNG)
 %-large.png: %.svg
 if USE_INKSCAPE
 	$(INKSCAPE) --file=$< --export-dpi=180 --export-area-drawing --export-png=$@
@@ -198,6 +217,11 @@ if USE_RSVG
 endif
 endif
 
+#####################################################################
+# Miscellaneous targets
+#####################################################################
+
+# A timestamp file. Holds the date at the time of the invocation
 builddate:
 	env LC_ALL=C date +"%B %d, %Y" > $@	
 
