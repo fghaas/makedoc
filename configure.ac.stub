@@ -100,6 +100,13 @@ AC_ARG_WITH([pdf-paper-size],
 	[ PAPER_SIZE="A4" ])
 AC_SUBST(PAPER_SIZE)
 
+AC_ARG_WITH([pdf-titlepage],
+    [AS_HELP_STRING([--with-pdf-titlepage=PATH],
+       [set path for the DocBook title page XML file (default: none)])],
+	[ FO_TITLEPAGE="$withval" ])
+AC_SUBST(FO_TITLEPAGE)
+AM_CONDITIONAL(USE_FO_TITLEPAGE, [test -n "$FO_TITLEPAGE"])
+
 AC_ARG_WITH([fop-config],
     [AS_HELP_STRING([--with-fop-config=PATH],
        [location of the FOP configuration file (no default)])],
@@ -249,6 +256,11 @@ if test -n "$FOP_CONFIG"; then
    AC_CHECK_FILE([$FOP_CONFIG],
    ,
    AC_MSG_ERROR([Cannot find FOP configuration file $FOP_CONFIG]))
+fi
+if test -n "$FO_TITLEPAGE"; then
+   AC_CHECK_FILE([$FO_TITLEPAGE],
+   ,
+   AC_MSG_ERROR([Cannot find PDF titlepage XML $FO_TITLEPAGE]))
 fi
 
 ## random vars

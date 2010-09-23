@@ -26,10 +26,18 @@ TITLEPAGE_STYLESHEET ?= $(STYLESHEET_PREFIX)/template/titlepage.xsl
 
 # For PDF output, define some variables to be used for
 # FO-to-PDF transformation
+if USE_FO_TITLEPAGE
 if PROFILING
 FO_STYLESHEET ?= $(abs_srcdir)/stylesheets/profile-fo.xsl
 else
 FO_STYLESHEET ?= $(abs_srcdir)/stylesheets/fo.xsl
+endif
+else
+if PROFILING
+FO_STYLESHEET ?= $(STYLESHEET_PREFIX)/fo/profile-docbook.xsl
+else
+FO_STYLESHEET ?= $(STYLESHEET_PREFIX)/fo/docbook.xsl
+endif
 endif
 
 # xsltproc options for HTML output
@@ -86,7 +94,11 @@ endif
 	--stringparam root.filename $* \
 	$(CHUNKED_HTML_STYLESHEET) $< 
 
+if USE_FO_TITLEPAGE
 %.fo: %.xml $(abs_srcdir)/stylesheets/fo-titlepage.xsl
+else
+%.fo: %.xml
+endif
 	$(XSLTPROC) -o $@ \
 	$(XSLTPROC_FO_OPTIONS) \
 	$(FO_STYLESHEET) $<
@@ -117,9 +129,11 @@ if RENDER_ODT
 endif
 
 # Title page layout (currently only used for FOP-generated PDF)
-%-titlepage.xsl: %-titlepage.xml
+if USE_FO_TITLEPAGE
+fo-titlepage.xsl: $(FO_TITLEPAGE)
 	$(XSLTPROC) -o $@ \
 	--xinclude $(TITLEPAGE_STYLESHEET) $<
+endif
 
 # Generated images: SVG from MathML
 # (needed for HTML output, and PDF if using FOP)
