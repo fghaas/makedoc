@@ -28,9 +28,9 @@ TITLEPAGE_STYLESHEET ?= $(STYLESHEET_PREFIX)/template/titlepage.xsl
 # FO-to-PDF transformation
 if USE_FO_TITLEPAGE
 if PROFILING
-FO_STYLESHEET ?= $(abs_srcdir)/stylesheets/profile-fo.xsl
+FO_STYLESHEET ?= $(abs_srcdir)/stylesheets/fo/profile-docbook.xsl
 else
-FO_STYLESHEET ?= $(abs_srcdir)/stylesheets/fo.xsl
+FO_STYLESHEET ?= $(abs_srcdir)/stylesheets/fo/docbook.xsl
 endif
 else
 if PROFILING
@@ -95,7 +95,7 @@ endif
 	$(CHUNKED_HTML_STYLESHEET) $< 
 
 if USE_FO_TITLEPAGE
-%.fo: %.xml $(abs_srcdir)/stylesheets/fo-titlepage.xsl
+%.fo: %.xml $(abs_srcdir)/stylesheets/fo/titlepage.xsl
 else
 %.fo: %.xml
 endif
@@ -130,7 +130,7 @@ endif
 
 # Title page layout (currently only used for FOP-generated PDF)
 if USE_FO_TITLEPAGE
-fo-titlepage.xsl: $(FO_TITLEPAGE)
+titlepage.xsl: $(FO_TITLEPAGE)
 	$(XSLTPROC) -o $@ \
 	--xinclude $(TITLEPAGE_STYLESHEET) $<
 endif
