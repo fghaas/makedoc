@@ -97,10 +97,13 @@ AC_SUBST(PAPER_SIZE)
 
 AC_ARG_WITH([fop-config],
     [AS_HELP_STRING([--with-fop-config=PATH],
-       [location of the FOP configuration file (default fop-config.xml)])],
-	[ FOP_CONFIG="$withval" ],
-	[ FOP_CONFIG="fop-config.xml" ])
+       [location of the FOP configuration file (no default)])],
+	[ FOP_CONFIG="$withval" ])
+if test -n "$FOP_CONFIG"; then
+   FOP_OPTIONS='-c $(FOP_CONFIG)'
+fi
 AC_SUBST(FOP_CONFIG)
+AC_SUBST(FOP_OPTIONS)
 
 AC_ARG_WITH([xmlroff-backend],
     [AS_HELP_STRING([--with-xmlroff-backend=gp|cairo],
@@ -235,6 +238,13 @@ AM_CONDITIONAL([RENDER_MML], [ test -n "$MATHMLSVG" ])
 # Checks for typedefs, structures, and compiler characteristics.
 
 # Checks for library functions.
+
+# Checks for files
+if test -n "$FOP_CONFIG"; then
+   AC_CHECK_FILE([$FOP_CONFIG],
+   ,
+   AC_MSG_ERROR([Cannot find FOP configuration file $FOP_CONFIG]))
+fi
 
 ## random vars
 

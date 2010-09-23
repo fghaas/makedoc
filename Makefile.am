@@ -92,7 +92,7 @@ endif
 if RENDER_PDF
 %.pdf: %.fo
 if USE_FOP
-	$(FOP) -c $(abs_srcdir)/$(FOP_CONFIG) $< -pdf $@
+	$(FOP) $(FOP_OPTIONS) $< -pdf $@
 endif
 if USE_XMLROFF
 	$(XMLROFF) --backend=$(XMLROFF_BACKEND) --format=pdf -o $@ $<
@@ -102,7 +102,7 @@ endif
 if RENDER_PS
 %.ps: %.fo
 if USE_FOP
-	$(FOP) -c $(abs_srcdir)/$(FOP_CONFIG) $< -ps $@
+	$(FOP) $(FOP_OPTIONS) $< -pdf $@
 endif
 if USE_XMLROFF
 	$(XMLROFF) --backend=$(XMLROFF_BACKEND) --format=ps -o $@ $<
