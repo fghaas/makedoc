@@ -54,15 +54,17 @@ XSLTPROC_FO_OPTIONS =  --xinclude \
  --stringparam insert.link.page.number yes \
  --stringparam insert.xref.page.number yes \
  --stringparam graphic.default.extension svg \
- --param section.autolabel 1 \
- --param section.autolabel.max.depth 2 \
- --param section.label.includes.component.label 1 \
  --stringparam generate.toc "$(FO_TOC)" \
  --param use.extensions 1 \
  --param tablecolumns.extension 0 \
  --param admon.graphics 1 \
  --stringparam admon.graphics.path $(abs_srcdir)/images/ \
  --stringparam admon.graphics.extension .svg
+if SECTION_NUMBERS
+XSLTPROC_FO_OPTIONS += --param section.autolabel 1 \
+ --param section.autolabel.max.depth 2 \
+ --param section.label.includes.component.label 1
+endif
 if PROFILING
 XSLTPROC_FO_OPTIONS += $(XSLTPROC_PROFILING_OPTIONS)
 endif
