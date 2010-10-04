@@ -163,6 +163,12 @@ if RENDER_MML
 	$(SED)-i -e 's/<svg version="1"/<svg version="1.0"/' $@
 endif
 
+# Generated images: Encapsulated PostScript from SVG
+if USE_INKSCAPE
+%.eps: %.svg
+	$(INKSCAPE) --file=$< --export-area-drawing --export-eps=$@
+endif
+
 # Generated images: PNG from SVG
 # n(eeded for HTML output)
 if RENDER_SVG
