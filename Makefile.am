@@ -104,22 +104,36 @@ endif
 	$(FO_STYLESHEET) $<
 
 if RENDER_PDF
+if USE_DBLATEX
+%.pdf: %.xml
+else
 %.pdf: %.fo
+endif
 if USE_FOP
 	$(FOP) $(FOP_OPTIONS) $< -pdf $@
 endif
 if USE_XMLROFF
 	$(XMLROFF) --backend=$(XMLROFF_BACKEND) --format=pdf -o $@ $<
 endif
+if USE_DBLATEX
+	$(DBLATEX) --backend=$(DBLATEX_BACKEND) --pdf --output=$@ $<
+endif
 endif
 
 if RENDER_PS
+if USE_DBLATEX
+%.ps: %.xml
+else
 %.ps: %.fo
+endif
 if USE_FOP
 	$(FOP) $(FOP_OPTIONS) $< -pdf $@
 endif
 if USE_XMLROFF
 	$(XMLROFF) --backend=$(XMLROFF_BACKEND) --format=ps -o $@ $<
+endif
+if USE_DBLATEX
+	$(DBLATEX) --backend=$(DBLATEX_BACKEND) --ps --output=$@ $<
 endif
 endif
 

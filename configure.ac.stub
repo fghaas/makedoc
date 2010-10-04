@@ -64,13 +64,14 @@ AC_ARG_WITH([ulink-target],
 AC_SUBST(ULINK_TARGET)
 
 AC_ARG_WITH([pdf-formatter],
-    [AS_HELP_STRING([--with-pdf-formatter=fop|xmlroff],
+    [AS_HELP_STRING([--with-pdf-formatter=fop|xmlroff|dblatex],
        [use this formatter for rendering FO to PDF (default: fop)])],
 	[ PDF_FORMATTER="$withval" ],
 	[ PDF_FORMATTER="fop" ])
 AC_SUBST(PDF_FORMATTER)
 AM_CONDITIONAL(USE_FOP, [test "x$enable_pdf" != "xno" && test "x$PDF_FORMATTER" = "xfop"])
 AM_CONDITIONAL(USE_XMLROFF, [test "x$enable_pdf" != "xno" && test "x$PDF_FORMATTER" = "xxmlroff"])
+AM_CONDITIONAL(USE_DBLATEX, [test "x$enable_pdf" != "xno" && test "x$PDF_FORMATTER" = "xdblatex"])
 
 AC_ARG_WITH([pdf-toc],
     [AS_HELP_STRING([--with-pdf-toc=STRING],
@@ -123,6 +124,13 @@ AC_ARG_WITH([xmlroff-backend],
 	[ XMLROFF_BACKEND="$withval" ],
 	[ XMLROFF_BACKEND="gp" ])
 AC_SUBST(XMLROFF_BACKEND)
+
+AC_ARG_WITH([dblatex-backend],
+    [AS_HELP_STRING([--with-dblatex-backend=pdftex|dvips|xetex],
+       [use this dblatex backend for rendering DocBook XML to PDF (default pdftex)])],
+	[ DBLATEX_BACKEND="$withval" ],
+	[ DBLATEX_BACKEND="pdftex" ])
+AC_SUBST(DBLATEX_BACKEND)
 
 AC_ARG_WITH([svg-rasterizer],
     [AS_HELP_STRING([--with-svg-rasterizer=inkscape|rsvg],
@@ -202,11 +210,17 @@ if test "x$enable_pdf" != "xno"; then
 	if test -z $XMLROFF; then
 	   AC_MSG_WARN([xmlroff not found, cannot render PDF])
 	fi
+	;;
+     "xdblatex")
+	AC_CHECK_PROGS([DBLATEX], [dblatex])
+	if test -z $DBLATEX; then
+	   AC_MSG_WARN([dblatex not found, cannot render PDF])
+	fi
    esac
 fi
 AM_CONDITIONAL([FONT_METRICS_TTF], [ test -n "$FOP_TTFREADER" ])
-AM_CONDITIONAL([RENDER_PDF], [ test -n "$FOP" || test -n "$XMLROFF" ])
-AM_CONDITIONAL([RENDER_PS], [ test -n "$FOP" || test -n "$XMLROFF" ])
+AM_CONDITIONAL([RENDER_PDF], [ test -n "$FOP" || test -n "$XMLROFF" || test -n "$DBLATEX" ])
+AM_CONDITIONAL([RENDER_PS], [ test -n "$FOP" || test -n "$XMLROFF" || test -n "$DBLATEX" ])
 
 dnl docbook2xml -- for creating OpenDocument Text from DocBook
 if test "x$enable_odf" != "xno"; then
