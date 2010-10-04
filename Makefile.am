@@ -88,12 +88,15 @@ if ASCIIDOC_SUPPORT
 endif
 
 # Multiple-page HTML
+if XSLT
 %.html: %.xml
 	$(XSLTPROC) \
 	$(XSLTPROC_HTML_OPTIONS) \
 	--stringparam root.filename $* \
 	$(CHUNKED_HTML_STYLESHEET) $< 
+endif
 
+if XSLT
 if USE_FO_TITLEPAGE
 %.fo: %.xml $(abs_srcdir)/stylesheets/fo/titlepage.xsl
 else
@@ -102,6 +105,7 @@ endif
 	$(XSLTPROC) -o $@ \
 	$(XSLTPROC_FO_OPTIONS) \
 	$(FO_STYLESHEET) $<
+endif
 
 if RENDER_PDF
 if USE_DBLATEX

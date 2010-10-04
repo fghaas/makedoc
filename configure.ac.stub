@@ -172,10 +172,12 @@ AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_SED
 
+dnl xsltproc -- for XSLT transformation
 AC_CHECK_PROGS([XSLTPROC], [xsltproc])
 if test -z $XSLTPROC; then
-	AC_MSG_ERROR([xsltproc not found, cannot transform XML])
+	AC_MSG_WARN([xsltproc not found, cannot transform XML])
 fi
+AM_CONDITIONAL([XSLT], [ test -n "$XSLTPROC"])
 
 dnl xmllint -- for XML validation
 AC_CHECK_PROGS([XMLLINT], [xmllint])
