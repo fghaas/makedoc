@@ -170,7 +170,7 @@ if USE_INKSCAPE
 endif
 
 # Generated images: PNG from SVG
-# n(eeded for HTML output)
+# (needed for HTML output)
 if RENDER_SVG
 %.png: %.svg
 if USE_INKSCAPE
