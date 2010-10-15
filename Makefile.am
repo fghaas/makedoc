@@ -87,15 +87,25 @@ if USE_FOP
 XSLTPROC_FO_OPTIONS += --param fop1.extensions 1
 endif
 
+# AsciiDoc options
+ASCIIDOC_OPTIONS = --backend=docbook --doctype=$(ASCIIDOC_DOCTYPE)
+if ENABLE_ASCIIDOC_DOCINFO
+ASCIIDOC_OPTIONS += --attribute=docinfo
+endif
+
 #####################################################################
 # Targets for individual document types
 #####################################################################
 
 # XML from asciidoc
 if ASCIIDOC_SUPPORT
+if ENABLE_ASCIIDOC_DOCINFO
+%.xml: %.$(ASCIIDOC_EXTENSION) %-docinfo.xml
+else
 %.xml: %.$(ASCIIDOC_EXTENSION)
+endif
 	$(ASCIIDOC) --out-file=$@ \
-	--backend=docbook --doctype=article $<
+	$(ASCIIDOC_OPTIONS) $<
 endif
 
 # Multiple-page HTML (from XML)
@@ -226,3 +236,9 @@ endif
 builddate:
 	env LC_ALL=C date +"%B %d, %Y" > $@	
 
+# An empty docinfo file. Created if we have docinfo support enabled,
+# and no -docinfo.xml file is found
+if ENABLE_ASCIIDOC_DOCINFO
+%-docinfo.xml:
+	echo '<!-- Empty AsciiDoc docinfo file -->' > $@
+endif

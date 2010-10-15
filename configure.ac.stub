@@ -27,6 +27,11 @@ AC_ARG_ENABLE([asciidoc],
 			[disable AsciiDoc input (default: enabled)])])
 AM_CONDITIONAL(ENABLE_ASCIIDOC, [ test x$enable_asciidoc != "xno" ])
 
+AC_ARG_ENABLE([asciidoc-docinfo],
+    [AS_HELP_STRING([--enable-asciidoc-docinfo],
+       [include AsciiDoc docinfo files (if they exist, default: disabled)])])
+AM_CONDITIONAL(ENABLE_ASCIIDOC_DOCINFO, [ test x$enable_asciidoc_docinfo = "xyes" ])
+
 AC_ARG_ENABLE([mathml],
 	[AS_HELP_STRING([--disable-mathml],
 			[disable MathML support (default: enabled)])])
@@ -55,6 +60,13 @@ AC_ARG_WITH([asciidoc-extension],
 	[ ASCIIDOC_EXTENSION="$withval" ],
 	[ ASCIIDOC_EXTENSION="txt" ])
 AC_SUBST(ASCIIDOC_EXTENSION)
+
+AC_ARG_WITH([asciidoc-doctype],
+    [AS_HELP_STRING([--with-asciidoc-type=article|book|manpage],
+       [assume this document type for AsciiDoc files (default article)])],
+	[ ASCIIDOC_DOCTYPE="$withval" ],
+	[ ASCIIDOC_DOCTYPE="article" ])
+AC_SUBST(ASCIIDOC_DOCTYPE)
 
 AC_ARG_WITH([ulink-target],
     [AS_HELP_STRING([--with-ulink-target=NAME],
