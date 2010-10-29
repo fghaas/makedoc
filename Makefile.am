@@ -135,6 +135,12 @@ if RENDER_ODT
 	$(DOCBOOK2ODF) --force $< --output-file $@
 endif
 
+# Microsoft Word compatible (from ODT)
+if RENDER_DOC
+%.doc: %.odt
+	$(UNOCONV) -f doc $<
+endif
+
 # PDF (from FO)
 if RENDER_PDF
 if USE_DBLATEX
