@@ -19,12 +19,21 @@
 # XML catalogs set up correctly. On Debian/Ubuntu systems, this is a
 # simple matter of "apt-get install docbook-xsl".
 if PROFILING
+if HTML_CHUNK
+HTML_STYLESHEET ?= $(STYLESHEET_PREFIX)/xhtml/profile-chunk.xsl
+else
 HTML_STYLESHEET ?= $(STYLESHEET_PREFIX)/xhtml/profile-docbook.xsl
-CHUNKED_HTML_STYLESHEET ?= $(STYLESHEET_PREFIX)/xhtml/profile-chunk.xsl
+endif
+else
+if HTML_CHUNK
+HTML_STYLESHEET ?= $(STYLESHEET_PREFIX)/xhtml/chunk.xsl
 else
 HTML_STYLESHEET ?= $(STYLESHEET_PREFIX)/xhtml/docbook.xsl
-CHUNKED_HTML_STYLESHEET ?= $(STYLESHEET_PREFIX)/xhtml/chunk.xsl
 endif
+endif
+
+# Stylesheet for creating a titlepage stylesheet from titlepage
+# template
 TITLEPAGE_STYLESHEET ?= $(STYLESHEET_PREFIX)/template/titlepage.xsl
 
 # For PDF output, define some variables to be used for
@@ -111,13 +120,13 @@ endif
 	$(ASCIIDOC_OPTIONS) $<
 endif
 
-# Multiple-page HTML (from XML)
+# HTML (from XML)
 if RENDER_HTML
 %.html: %.xml
 	$(XSLTPROC) \
 	$(XSLTPROC_HTML_OPTIONS) \
 	--stringparam root.filename $* \
-	$(CHUNKED_HTML_STYLESHEET) $< 
+	$(HTML_STYLESHEET) $<
 endif
 
 # FO (from XML)

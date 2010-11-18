@@ -57,6 +57,11 @@ AC_ARG_ENABLE([draft-mode],
 			[assume any document is a draft (default: disabled)])])
 AM_CONDITIONAL(DRAFT_MODE, [ test "x$enable_draft_mode" = "xyes" ])
 
+AC_ARG_ENABLE([html-chunking],
+	[AS_HELP_STRING([--enable-html-chunking],
+			[create multiple chunks for HTML output (default: disabled)])])
+AM_CONDITIONAL(HTML_CHUNK, [ test "x$enable_html_chunking" = "xyes" ])
+
 AC_ARG_ENABLE([section-numbers],
 	[AS_HELP_STRING([--enable-section-numbers],
 			[enable section numbering for PDF output (default: disabled)])])
