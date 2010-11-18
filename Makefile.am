@@ -60,6 +60,9 @@ XSLTPROC_OPTIONS = --xinclude \
 if DRAFT_MODE
 XSLTPROC_OPTIONS += --stringparam draft.mode yes
 endif
+if SYNTAX_HIGHLIGHTING
+XSLTPROC_OPTIONS += --param highlight.source 1
+endif
 
 # xsltproc options for HTML output
 XSLTPROC_HTML_OPTIONS = $(XSLTPROC_OPTIONS) \
@@ -103,6 +106,9 @@ endif
 SAXON_PARAMS = admon.graphics=1
 if DRAFT_MODE
 SAXON_PARAMS += draft.mode='yes'
+endif
+if SYNTAX_HIGHLIGHTING
+SAXON_PARAMS += highlight.source=1
 endif
 
 SAXON_HTML_PARAMS = $(SAXON_PARAMS) \

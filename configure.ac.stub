@@ -67,6 +67,11 @@ AC_ARG_ENABLE([section-numbers],
 			[enable section numbering for PDF output (default: disabled)])])
 AM_CONDITIONAL(SECTION_NUMBERS, [ test "x$enable_section_numbers" = "xyes" ])
 
+AC_ARG_ENABLE([syntax-highlighting],
+	[AS_HELP_STRING([--enable-syntax-highlighting],
+			[enable syntax highlighting for source code listings (not supported by all processors/formatters, default: disabled)])])
+AM_CONDITIONAL(SYNTAX_HIGHLIGHTING, [ test "x$enable_syntax_highlighting" = "xyes" ])
+
 AC_ARG_WITH([stylesheets],
     [AS_HELP_STRING([--with-stylesheets=URL],
        [location of the DocBook XSL distribution])],
