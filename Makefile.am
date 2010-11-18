@@ -20,15 +20,15 @@
 # simple matter of "apt-get install docbook-xsl".
 if PROFILING
 if HTML_CHUNK
-HTML_STYLESHEET ?= $(STYLESHEET_PREFIX)/xhtml/profile-chunk.xsl
+HTML_STYLESHEET ?= $(STYLESHEET_PREFIX)/$(HTML_FLAVOR)/profile-chunk.xsl
 else
-HTML_STYLESHEET ?= $(STYLESHEET_PREFIX)/xhtml/profile-docbook.xsl
+HTML_STYLESHEET ?= $(STYLESHEET_PREFIX)/$(HTML_FLAVOR)/profile-docbook.xsl
 endif
 else
 if HTML_CHUNK
-HTML_STYLESHEET ?= $(STYLESHEET_PREFIX)/xhtml/chunk.xsl
+HTML_STYLESHEET ?= $(STYLESHEET_PREFIX)/$(HTML_FLAVOR)/chunk.xsl
 else
-HTML_STYLESHEET ?= $(STYLESHEET_PREFIX)/xhtml/docbook.xsl
+HTML_STYLESHEET ?= $(STYLESHEET_PREFIX)/$(HTML_FLAVOR)/docbook.xsl
 endif
 endif
 

@@ -102,6 +102,13 @@ AC_ARG_WITH([css],
 	[ CSS="default.css" ])
 AC_SUBST(CSS)
 
+AC_ARG_WITH([html-flavor],
+    [AS_HELP_STRING([--with-html-flavor=html|xhtml],
+       [select output HTML flavor (default xhtml)])],
+	[ HTML_FLAVOR="$withval" ],
+	[ HTML_FLAVOR="xhtml" ])
+AC_SUBST(HTML_FLAVOR)
+
 AC_ARG_WITH([pdf-formatter],
     [AS_HELP_STRING([--with-pdf-formatter=fop|xmlroff|dblatex],
        [use this formatter for rendering FO to PDF (default: fop)])],
