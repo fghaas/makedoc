@@ -224,7 +224,7 @@ if test -z $XSLTPROC; then
 	AC_MSG_WARN([xsltproc not found, cannot transform XML])
 fi
 AM_CONDITIONAL([XSLT], [ test -n "$XSLTPROC"])
-AM_CONDITIONAL([RENDER_HTML], [ test -n "$XSLTPROC" && test x$enable_html != "xno" ]
+AM_CONDITIONAL([RENDER_HTML], [ test -n "$XSLTPROC" && test x$enable_html != "xno" ])
 
 dnl xmllint -- for XML validation
 AC_CHECK_PROGS([XMLLINT], [xmllint])
