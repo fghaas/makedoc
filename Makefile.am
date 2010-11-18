@@ -178,6 +178,7 @@ if USE_SAXON
 	root.filename='$*' \
 	$(SAXON_HTML_PARAMS)
 endif
+endif
 
 # FO (from XML)
 if XSLT
