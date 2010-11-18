@@ -46,7 +46,7 @@ endif
 #####################################################################
 # Command line option sets for invoked programs
 #####################################################################
-XSLTPROC_OPTIONS == --xinclude \
+XSLTPROC_OPTIONS = --xinclude \
  --param admon.graphics 1
 if DRAFT_MODE
 XSLTPROC_OPTIONS += --stringparam draft.mode yes
