@@ -310,7 +310,7 @@ if USE_XSLTPROC
 	$(TITLEPAGE_STYLESHEET) $<
 endif
 if USE_SAXON
-	$(SAXON) -o $@
+	$(SAXON) -o $@ \
 	$< $(TITLEPAGE_STYLESHEET)
 endif
 endif
