@@ -112,7 +112,7 @@ endif
 endif
 
 # Multiple-page HTML (from XML)
-if XSLT
+if RENDER_HTML
 %.html: %.xml
 	$(XSLTPROC) \
 	$(XSLTPROC_HTML_OPTIONS) \

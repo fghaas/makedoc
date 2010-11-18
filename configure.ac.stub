@@ -12,6 +12,11 @@ AC_CANONICAL_HOST
 AC_LANG([C])
 
 # local options
+AC_ARG_ENABLE([html],
+	[AS_HELP_STRING([--disable-html],
+			[disable HTML output (default: enabled)])])
+AM_CONDITIONAL(ENABLE_HTML, [ test x$enable_html != "xno" ])
+
 AC_ARG_ENABLE([pdf],
 	[AS_HELP_STRING([--disable-pdf],
 			[disable PDF output (default: enabled)])])
@@ -207,6 +212,7 @@ if test -z $XSLTPROC; then
 	AC_MSG_WARN([xsltproc not found, cannot transform XML])
 fi
 AM_CONDITIONAL([XSLT], [ test -n "$XSLTPROC"])
+AM_CONDITIONAL([RENDER_HTML], [ test -n "$XSLTPROC" && test x$enable_html != "xno" ]
 
 dnl xmllint -- for XML validation
 AC_CHECK_PROGS([XMLLINT], [xmllint])
@@ -323,6 +329,9 @@ fi
 AC_MSG_NOTICE()
 AC_MSG_NOTICE([Feature summary])
 AC_MSG_NOTICE([===============])
+AM_COND_IF([RENDER_HTML],
+           AC_MSG_NOTICE([HTML output is enabled]),
+           AC_MSG_NOTICE([HTML output is not enabled (install xsltproc)]))
 AM_COND_IF([RENDER_PDF],
            AC_MSG_NOTICE([PDF output is enabled]),
 	   AC_MSG_NOTICE([PDF output is not enabled (install fop or xmlroff)]))
