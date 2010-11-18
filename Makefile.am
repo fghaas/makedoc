@@ -46,12 +46,16 @@ endif
 #####################################################################
 # Command line option sets for invoked programs
 #####################################################################
+XSLTPROC_OPTIONS == --xinclude \
+ --param admon.graphics 1
+if DRAFT_MODE
+XSLTPROC_OPTIONS += --stringparam draft.mode yes
+endif
 
 # xsltproc options for HTML output
-XSLTPROC_HTML_OPTIONS = --xinclude \
+XSLTPROC_HTML_OPTIONS = $(XSLTPROC_OPTIONS) \
  --param use.id.as.filename 1 \
  --param generate.index 0 \
- --param admon.graphics 1 \
  --stringparam admon.graphics.path images/ \
  --stringparam admon.graphics.extension .png \
  --stringparam ulink.target $(ULINK_TARGET) \
@@ -62,7 +66,7 @@ XSLTPROC_HTML_OPTIONS += $(XSLTPROC_PROFILING_OPTIONS)
 endif
 
 # xsltproc options for FO output
-XSLTPROC_FO_OPTIONS =  --xinclude \
+XSLTPROC_FO_OPTIONS =  $(XSLTPROC_OPTIONS) \
  --stringparam paper.type $(PAPER_SIZE) \
  --stringparam body.font.family "$(FO_BODY_FONT_FAMILY)" \
  --stringparam title.font.family "$(FO_TITLE_FONT_FAMILY)" \
@@ -72,7 +76,6 @@ XSLTPROC_FO_OPTIONS =  --xinclude \
  --stringparam generate.toc "$(FO_TOC)" \
  --param use.extensions 1 \
  --param tablecolumns.extension 0 \
- --param admon.graphics 1 \
  --stringparam admon.graphics.path $(abs_srcdir)/images/ \
  --stringparam admon.graphics.extension .svg
 if SECTION_NUMBERS
