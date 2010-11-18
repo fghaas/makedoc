@@ -85,6 +85,13 @@ AC_ARG_WITH([ulink-target],
 	[ ULINK_TARGET="_blank" ])
 AC_SUBST(ULINK_TARGET)
 
+AC_ARG_WITH([css],
+    [AS_HELP_STRING([--with-css=NAME],
+       [CSS style sheet for HTML output (default default.css)])],
+	[ CSS="$withval" ],
+	[ CSS="default.css" ])
+AC_SUBST(CSS)
+
 AC_ARG_WITH([pdf-formatter],
     [AS_HELP_STRING([--with-pdf-formatter=fop|xmlroff|dblatex],
        [use this formatter for rendering FO to PDF (default: fop)])],

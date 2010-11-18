@@ -59,7 +59,7 @@ XSLTPROC_HTML_OPTIONS = $(XSLTPROC_OPTIONS) \
  --stringparam admon.graphics.path images/ \
  --stringparam admon.graphics.extension .png \
  --stringparam ulink.target $(ULINK_TARGET) \
- --stringparam html.stylesheet drbd-howto-collection.css \
+ --stringparam html.stylesheet $(CSS) \
  --stringparam graphic.default.extension png
 if PROFILING
 XSLTPROC_HTML_OPTIONS += $(XSLTPROC_PROFILING_OPTIONS)
