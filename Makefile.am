@@ -305,8 +305,14 @@ endif
 # Title page layout (currently only used for FOP-generated PDF)
 if USE_FO_TITLEPAGE
 stylesheets/fo/titlepage.xsl: $(FO_TITLEPAGE)
+if USE_XSLTPROC
 	$(XSLTPROC) -o $@ \
-	--xinclude $(TITLEPAGE_STYLESHEET) $<
+	$(TITLEPAGE_STYLESHEET) $<
+endif
+if USE_SAXON
+	$(SAXON) -o $@
+	$< $(TITLEPAGE_STYLESHEET)
+endif
 endif
 
 # A timestamp file. Holds the date at the time of the invocation
