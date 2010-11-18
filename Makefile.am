@@ -99,6 +99,42 @@ if USE_FOP
 XSLTPROC_FO_OPTIONS += --param fop1.extensions 1
 endif
 
+# Saxon parameters
+SAXON_PARAMS = admon.graphics=1
+if DRAFT_MODE
+SAXON_PARAMS += draft.mode='yes'
+endif
+
+SAXON_HTML_PARAMS = $(SAXON_PARAMS) \
+ use.id.as.filename=1 \
+ generate.index=0 \
+ admon.graphics.path='images/' \
+ admon.graphics.extension='.png' \
+ ulink.target='$(ULINK_TARGET)' \
+ html.stylesheet='$(CSS)' \
+ graphic.default.extension='png'
+
+SAXON_FO_PARAMS =  $(SAXON_PARAMS) \
+ paper.type='$(PAPER_SIZE)' \
+ body.font.family='$(FO_BODY_FONT_FAMILY)' \
+ title.font.family='$(FO_TITLE_FONT_FAMILY)' \
+ insert.link.page.number='yes' \
+ insert.xref.page.number='yes' \
+ graphic.default.extension='svg' \
+ generate.toc='$(FO_TOC)'\
+ use.extensions=1 \
+ tablecolumns.extension=0 \
+ admon.graphics.path='$(abs_srcdir)/images/' \
+ admon.graphics.extension='.svg'
+if SECTION_NUMBERS
+SAXON_FO_PARAMS += section.autolabel=1 \
+ section.autolabel.max.depth=2 \
+ section.label.includes.component.label=1
+endif
+if USE_FOP
+SAXON_FO_PARAMS += fop1.extensions=1
+endif
+
 # AsciiDoc options
 ASCIIDOC_OPTIONS = --backend=docbook --doctype=$(ASCIIDOC_DOCTYPE)
 if ENABLE_ASCIIDOC_DOCINFO
@@ -123,10 +159,18 @@ endif
 # HTML (from XML)
 if RENDER_HTML
 %.html: %.xml
+if USE_XSLTPROC
 	$(XSLTPROC) \
 	$(XSLTPROC_HTML_OPTIONS) \
 	--stringparam root.filename $* \
 	$(HTML_STYLESHEET) $<
+endif
+if USE_SAXON
+	$(SAXON) \
+	-o $@ \
+	$< $(HTML_STYLESHEET) \
+	root.filename='$*' \
+	$(SAXON_HTML_PARAMS)
 endif
 
 # FO (from XML)
@@ -136,9 +180,17 @@ if USE_FO_TITLEPAGE
 else
 %.fo: %.xml
 endif
+if USE_XSLTPROC
 	$(XSLTPROC) -o $@ \
 	$(XSLTPROC_FO_OPTIONS) \
 	$(FO_STYLESHEET) $<
+endif
+if USE_SAXON
+	$(SAXON) \
+	-o $@ \
+	$< $(FO_STYLESHEET) \
+	$(SAXON_FO_PARAMS)
+endif
 endif
 
 # OpenDocument Text (from XML)

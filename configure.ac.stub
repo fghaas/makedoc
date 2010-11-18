@@ -109,6 +109,15 @@ AC_ARG_WITH([html-flavor],
 	[ HTML_FLAVOR="xhtml" ])
 AC_SUBST(HTML_FLAVOR)
 
+AC_ARG_WITH([xslt-processor],
+    [AS_HELP_STRING([--with-xslt-processor=xsltproc|saxon-xslt],
+       [use this processor for rendering DocBook XML to FO and HTML (default: xsltproc)])],
+	[ XSLT_PROCESSOR="$withval" ],
+	[ XSLT_PROCESSOR="xsltproc" ])
+AC_SUBST(XSLT_PROCESSOR)
+AM_CONDITIONAL(USE_XSLTPROC, [ test "x$XSLT_PROCESSOR" = "xxsltproc"])
+AM_CONDITIONAL(USE_SAXON, [ test "x$XSLT_PROCESSOR" = "xsaxon-xslt"])
+
 AC_ARG_WITH([pdf-formatter],
     [AS_HELP_STRING([--with-pdf-formatter=fop|xmlroff|dblatex],
        [use this formatter for rendering FO to PDF (default: fop)])],
@@ -218,13 +227,23 @@ AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_SED
 
-dnl xsltproc -- for XSLT transformation
-AC_CHECK_PROGS([XSLTPROC], [xsltproc])
-if test -z $XSLTPROC; then
-	AC_MSG_WARN([xsltproc not found, cannot transform XML])
-fi
-AM_CONDITIONAL([XSLT], [ test -n "$XSLTPROC"])
-AM_CONDITIONAL([RENDER_HTML], [ test -n "$XSLTPROC" && test x$enable_html != "xno" ])
+dnl xsltproc or Saxon -- for XSLT transformation
+case "x$XSLT_PROCESSOR" in
+     "xxsltproc")
+	AC_CHECK_PROGS([XSLTPROC], [xsltproc])
+	if test -z $XSLTPROC; then
+	   AC_MSG_WARN([xsltproc not found, cannot transform XML])
+	fi
+	;;
+     "xsaxon-xslt")
+	AC_CHECK_PROGS([SAXON], [saxon-xslt])
+	if test -z $SAXON; then
+	   AC_MSG_WARN([Saxon not found, cannot transform XML])
+	fi
+	;;
+esac
+AM_CONDITIONAL([XSLT], [ test -n "$XSLTPROC" || test -n "$SAXON" ])
+AM_CONDITIONAL([RENDER_HTML], [ test x$enable_html != "xno" ])
 
 dnl xmllint -- for XML validation
 AC_CHECK_PROGS([XMLLINT], [xmllint])
