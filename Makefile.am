@@ -147,6 +147,11 @@ if ENABLE_ASCIIDOC_DOCINFO
 ASCIIDOC_OPTIONS += --attribute=docinfo
 endif
 
+# dblatex options
+DBLATEX_OPTIONS = --backend=$(DBLATEX_BACKEND)
+if DRAFT_MODE
+DBLATEX_OPTIONS += -P draft.mode='yes'
+endif
 #####################################################################
 # Targets for individual document types
 #####################################################################
@@ -226,7 +231,7 @@ if USE_XMLROFF
 	$(XMLROFF) --backend=$(XMLROFF_BACKEND) --format=pdf -o $@ $<
 endif
 if USE_DBLATEX
-	$(DBLATEX) --backend=$(DBLATEX_BACKEND) --pdf --output=$@ $<
+	$(DBLATEX) $(DBLATEX_OPTIONS) --pdf --output=$@ $<
 endif
 endif
 
@@ -244,7 +249,7 @@ if USE_XMLROFF
 	$(XMLROFF) --backend=$(XMLROFF_BACKEND) --format=ps -o $@ $<
 endif
 if USE_DBLATEX
-	$(DBLATEX) --backend=$(DBLATEX_BACKEND) --ps --output=$@ $<
+	$(DBLATEX) $(DBLATEX_OPTIONS) --ps --output=$@ $<
 endif
 endif
 
