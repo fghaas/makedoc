@@ -172,6 +172,9 @@ else
 DBLATEX_OPTIONS += -P show.comments=0
 endif
 
+# docbook2odf options
+DOCBOOK2ODF_OPTIONS = --force
+
 #####################################################################
 # Targets for individual document types
 #####################################################################
@@ -228,7 +231,7 @@ endif
 # OpenDocument Text (from XML)
 if RENDER_ODT
 %.odt: %.xml
-	$(DOCBOOK2ODF) --force $< --output-file $@
+	$(DOCBOOK2ODF) $(DOCBOOK2ODF_OPTIONS) $< --output-file $@
 endif
 
 # Microsoft Word compatible (from ODT)
