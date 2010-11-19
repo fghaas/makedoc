@@ -52,6 +52,11 @@ AC_ARG_ENABLE([profiling],
 			[enable document profiling (default: disabled)])])
 AM_CONDITIONAL(PROFILING, [ test x$enable_profiling = "xyes" ])
 
+AC_ARG_ENABLE([comments],
+	[AS_HELP_STRING([--enable-comments],
+			[include comments (remarks) in output (default: disabled)])])
+AM_CONDITIONAL(COMMENTS, [ test x$enable_comments = "xyes" ])
+
 AC_ARG_ENABLE([draft-mode],
 	[AS_HELP_STRING([--enable-draft-mode],
 			[assume any document is a draft (default: disabled)])])

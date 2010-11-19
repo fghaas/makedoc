@@ -60,6 +60,11 @@ XSLTPROC_OPTIONS = --xinclude \
 if DRAFT_MODE
 XSLTPROC_OPTIONS += --stringparam draft.mode yes
 endif
+if COMMENTS
+XSLTPROC_OPTIONS += --param show.comments 1
+else
+XSLTPROC_OPTIONS += --param show.comments 0
+endif
 if SYNTAX_HIGHLIGHTING
 XSLTPROC_OPTIONS += --param highlight.source 1
 endif
@@ -107,6 +112,11 @@ SAXON_PARAMS = admon.graphics=1
 if DRAFT_MODE
 SAXON_PARAMS += draft.mode='yes'
 endif
+if COMMENTS
+SAXON_PARAMS += show.comments=1
+else
+SAXON_PARAMS += show.comments=0
+endif
 if SYNTAX_HIGHLIGHTING
 SAXON_PARAMS += highlight.source=1
 endif
@@ -142,7 +152,11 @@ SAXON_FO_PARAMS += fop1.extensions=1
 endif
 
 # AsciiDoc options
-ASCIIDOC_OPTIONS = --backend=docbook --doctype=$(ASCIIDOC_DOCTYPE)
+ASCIIDOC_OPTIONS = --backend=docbook \
+  --doctype=$(ASCIIDOC_DOCTYPE)
+if COMMENTS
+ASCIIDOC_OPTIONS += --attribute=showcomments
+endif
 if ENABLE_ASCIIDOC_DOCINFO
 ASCIIDOC_OPTIONS += --attribute=docinfo
 endif
@@ -152,6 +166,12 @@ DBLATEX_OPTIONS = --backend=$(DBLATEX_BACKEND)
 if DRAFT_MODE
 DBLATEX_OPTIONS += -P draft.mode='yes'
 endif
+if COMMENTS
+DBLATEX_OPTIONS += -P show.comments=1
+else
+DBLATEX_OPTIONS += -P show.comments=0
+endif
+
 #####################################################################
 # Targets for individual document types
 #####################################################################
