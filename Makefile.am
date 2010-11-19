@@ -230,8 +230,15 @@ endif
 
 # OpenDocument Text (from XML)
 if RENDER_ODT
+if USE_ODF_TEMPLATE
+%.odt: %.odt-tmp
+	$(UNOCONV) -f odt -t '$(ODF_TEMPLATE)' $<
+%.odt-tmp: %.xml
+	$(DOCBOOK2ODF) $(DOCBOOK2ODF_OPTIONS) $< --output-file $@
+else
 %.odt: %.xml
 	$(DOCBOOK2ODF) $(DOCBOOK2ODF_OPTIONS) $< --output-file $@
+endif
 endif
 
 # Microsoft Word compatible (from ODT)

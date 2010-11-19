@@ -206,6 +206,13 @@ AC_SUBST(SVG_RASTERIZER)
 AM_CONDITIONAL(USE_INKSCAPE, [test "x$SVG_RASTERIZER" = "xinkscape"])
 AM_CONDITIONAL(USE_RSVG, [test "x$SVG_RASTERIZER" = "xrsvg"])
 
+AC_ARG_WITH([odf-template],
+    [AS_HELP_STRING([--with-odf-template=PATH],
+       [use this OpenDocument template (default: none)])],
+	[ ODF_TEMPLATE="$withval" ])
+AC_SUBST(ODF_TEMPLATE)
+AM_CONDITIONAL(USE_ODF_TEMPLATE, [test "x$ODF_TEMPLATE" != "x"])
+
 dnl DocBook document profiling options
 AC_ARG_WITH([profile-arch],
     [AS_HELP_STRING([--with-profile-arch=NAME],
