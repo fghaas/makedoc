@@ -68,6 +68,11 @@ endif
 if SYNTAX_HIGHLIGHTING
 XSLTPROC_OPTIONS += --param highlight.source 1
 endif
+if SECTION_NUMBERS
+XSLTPROC_OPTIONS += --param section.autolabel 1 \
+ --param section.autolabel.max.depth 2 \
+ --param section.label.includes.component.label 1
+endif
 
 # xsltproc options for HTML output
 XSLTPROC_HTML_OPTIONS = $(XSLTPROC_OPTIONS) \
@@ -95,11 +100,6 @@ XSLTPROC_FO_OPTIONS =  $(XSLTPROC_OPTIONS) \
  --param tablecolumns.extension 0 \
  --stringparam admon.graphics.path $(abs_srcdir)/images/ \
  --stringparam admon.graphics.extension .svg
-if SECTION_NUMBERS
-XSLTPROC_FO_OPTIONS += --param section.autolabel 1 \
- --param section.autolabel.max.depth 2 \
- --param section.label.includes.component.label 1
-endif
 if PROFILING
 XSLTPROC_FO_OPTIONS += $(XSLTPROC_PROFILING_OPTIONS)
 endif
@@ -119,6 +119,11 @@ SAXON_PARAMS += show.comments=0
 endif
 if SYNTAX_HIGHLIGHTING
 SAXON_PARAMS += highlight.source=1
+endif
+if SECTION_NUMBERS
+SAXON_PARAMS += section.autolabel=1 \
+ section.autolabel.max.depth=2 \
+ section.label.includes.component.label=1
 endif
 
 SAXON_HTML_PARAMS = $(SAXON_PARAMS) \
@@ -142,11 +147,6 @@ SAXON_FO_PARAMS =  $(SAXON_PARAMS) \
  tablecolumns.extension=0 \
  admon.graphics.path='$(abs_srcdir)/images/' \
  admon.graphics.extension='.svg'
-if SECTION_NUMBERS
-SAXON_FO_PARAMS += section.autolabel=1 \
- section.autolabel.max.depth=2 \
- section.label.includes.component.label=1
-endif
 if USE_FOP
 SAXON_FO_PARAMS += fop1.extensions=1
 endif
