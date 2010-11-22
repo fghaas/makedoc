@@ -56,7 +56,8 @@ endif
 # Command line option sets for invoked programs
 #####################################################################
 XSLTPROC_OPTIONS = --xinclude \
- --param admon.graphics 1
+ --param admon.graphics 1 \
+ --stringparam l10n.gentext.default.language $(DEFAULT_LANGUAGE)
 if DRAFT_MODE
 XSLTPROC_OPTIONS += --stringparam draft.mode yes
 endif
@@ -108,7 +109,8 @@ XSLTPROC_FO_OPTIONS += --param fop1.extensions 1
 endif
 
 # Saxon parameters
-SAXON_PARAMS = admon.graphics=1
+SAXON_PARAMS = admon.graphics=1 \
+  l10n.gentext.default.language='$(DEFAULT_LANGUAGE)'
 if DRAFT_MODE
 SAXON_PARAMS += draft.mode='yes'
 endif

@@ -105,6 +105,13 @@ AC_ARG_WITH([asciidoc-doctype],
 	[ ASCIIDOC_DOCTYPE="article" ])
 AC_SUBST(ASCIIDOC_DOCTYPE)
 
+AC_ARG_WITH([default-language],
+    [AS_HELP_STRING([--with-default-language=LANG],
+       [select default document language (use any 2-letter ISO language code, default en)])],
+	[ DEFAULT_LANGUAGE="$withval" ],
+	[ DEFAULT_LANGUAGE="en" ])
+AC_SUBST(DEFAULT_LANGUAGE)
+
 AC_ARG_WITH([ulink-target],
     [AS_HELP_STRING([--with-ulink-target=NAME],
        [target frame for external links in HTML output (default _blank)])],
