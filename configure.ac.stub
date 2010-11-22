@@ -32,15 +32,15 @@ AC_ARG_ENABLE([doc],
 			[disable Microsoft Word output (default: enabled)])])
 AM_CONDITIONAL(ENABLE_DOC, [ test x$enable_doc != "xno" ])
 
-AC_ARG_ENABLE([asciidoc],
-	[AS_HELP_STRING([--disable-asciidoc],
-			[disable AsciiDoc input (default: enabled)])])
-AM_CONDITIONAL(ENABLE_ASCIIDOC, [ test x$enable_asciidoc != "xno" ])
-
 AC_ARG_ENABLE([mathml],
 	[AS_HELP_STRING([--disable-mathml],
 			[disable MathML support (default: enabled)])])
 AM_CONDITIONAL(ENABLE_MATHML, [ test x$enable_mathml != "xno" ])
+
+AC_ARG_ENABLE([asciidoc],
+	[AS_HELP_STRING([--disable-asciidoc],
+			[disable AsciiDoc input (default: enabled)])])
+AM_CONDITIONAL(ENABLE_ASCIIDOC, [ test x$enable_asciidoc != "xno" ])
 
 AC_ARG_ENABLE([asciidoc-docinfo],
     [AS_HELP_STRING([--enable-asciidoc-docinfo],
@@ -51,6 +51,7 @@ AC_ARG_ENABLE([asciidoc-builddate],
 	[AS_HELP_STRING([--enable-asciidoc-builddate],
 			[ include build date in XML generated from AsciiDoc (default: disabled)])])
 AM_CONDITIONAL(ENABLE_ASCIIDOC_BUILDDATE, [ test "x$enable_asciidoc_builddate" = "xyes" ])
+
 AC_ARG_ENABLE([profiling],
 	[AS_HELP_STRING([--enable-profiling],
 			[enable document profiling (default: disabled)])])
