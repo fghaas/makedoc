@@ -162,6 +162,9 @@ endif
 if ENABLE_ASCIIDOC_DOCINFO
 ASCIIDOC_OPTIONS += --attribute=docinfo
 endif
+if ENABLE_ASCIIDOC_BUILDDATE
+ASCIIDOC_OPTIONS += --attribute=revdate=`date +%x`
+endif
 
 # dblatex options
 DBLATEX_OPTIONS = --backend=$(DBLATEX_BACKEND)

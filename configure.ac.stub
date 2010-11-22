@@ -47,6 +47,10 @@ AC_ARG_ENABLE([asciidoc-docinfo],
        [include AsciiDoc docinfo files (if they exist, default: disabled)])])
 AM_CONDITIONAL(ENABLE_ASCIIDOC_DOCINFO, [ test x$enable_asciidoc_docinfo = "xyes" ])
 
+AC_ARG_ENABLE([asciidoc-builddate],
+	[AS_HELP_STRING([--enable-asciidoc-builddate],
+			[ include build date in XML generated from AsciiDoc (default: disabled)])])
+AM_CONDITIONAL(ENABLE_ASCIIDOC_BUILDDATE, [ test "x$enable_asciidoc_builddate" = "xyes" ])
 AC_ARG_ENABLE([profiling],
 	[AS_HELP_STRING([--enable-profiling],
 			[enable document profiling (default: disabled)])])
