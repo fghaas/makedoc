@@ -77,6 +77,13 @@ AC_ARG_ENABLE([syntax-highlighting],
 			[enable syntax highlighting for source code listings (not supported by all processors/formatters, default: disabled)])])
 AM_CONDITIONAL(SYNTAX_HIGHLIGHTING, [ test "x$enable_syntax_highlighting" = "xyes" ])
 
+AC_ARG_WITH([section-number-depth],
+    [AS_HELP_STRING([--section-number-depth=NUM],
+       [number of levels to use for section numbering (default: 2, ignored unless --enable-section-numbers is also set)])],
+	[ SECTION_NUMBER_DEPTH="$withval" ],
+	[ SECTION_NUMBER_DEPTH="2" ])
+AC_SUBST(SECTION_NUMBER_DEPTH)
+
 AC_ARG_WITH([stylesheets],
     [AS_HELP_STRING([--with-stylesheets=URL],
        [location of the DocBook XSL distribution])],

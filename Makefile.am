@@ -70,7 +70,7 @@ XSLTPROC_OPTIONS += --param highlight.source 1
 endif
 if SECTION_NUMBERS
 XSLTPROC_OPTIONS += --param section.autolabel 1 \
- --param section.autolabel.max.depth 2 \
+ --param section.autolabel.max.depth $(SECTION_NUMBER_DEPTH) \
  --param section.label.includes.component.label 1
 endif
 
@@ -122,7 +122,7 @@ SAXON_PARAMS += highlight.source=1
 endif
 if SECTION_NUMBERS
 SAXON_PARAMS += section.autolabel=1 \
- section.autolabel.max.depth=2 \
+ section.autolabel.max.depth=$(SECTION_NUMBER_DEPTH) \
  section.label.includes.component.label=1
 endif
 
