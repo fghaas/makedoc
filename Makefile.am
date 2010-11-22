@@ -171,6 +171,9 @@ DBLATEX_OPTIONS += -P show.comments=1
 else
 DBLATEX_OPTIONS += -P show.comments=0
 endif
+if SECTION_NUMBERS
+DBLATEX_OPTIONS += -P doc.section.depth=$(SECTION_NUMBER_DEPTH)
+endif
 
 # docbook2odf options
 DOCBOOK2ODF_OPTIONS = --force
