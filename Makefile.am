@@ -163,7 +163,7 @@ if ENABLE_ASCIIDOC_DOCINFO
 ASCIIDOC_OPTIONS += --attribute=docinfo
 endif
 if ENABLE_ASCIIDOC_BUILDDATE
-ASCIIDOC_OPTIONS += --attribute=revdate=`date +%x`
+ASCIIDOC_OPTIONS += --attribute=docdate=`date +%x`
 endif
 
 # dblatex options
