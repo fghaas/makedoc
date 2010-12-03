@@ -205,6 +205,7 @@ if USE_XSLTPROC
 	$(XSLTPROC) \
 	$(XSLTPROC_HTML_OPTIONS) \
 	--stringparam root.filename $* \
+	--output $@ \
 	$(HTML_STYLESHEET) $<
 endif
 if USE_SAXON
