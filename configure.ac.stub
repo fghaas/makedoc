@@ -104,7 +104,7 @@ AC_ARG_WITH([asciidoc-extension],
 AC_SUBST(ASCIIDOC_EXTENSION)
 
 AC_ARG_WITH([asciidoc-doctype],
-    [AS_HELP_STRING([--with-asciidoc-type=article|book|manpage],
+    [AS_HELP_STRING([--with-asciidoc-doctype=article|book|manpage],
        [force this document type for AsciiDoc files (this will override any document type set in the AsciiDoc source)])],
 	[ ASCIIDOC_DOCTYPE="$withval" ])
 AC_SUBST(ASCIIDOC_DOCTYPE)
