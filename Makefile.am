@@ -154,8 +154,10 @@ SAXON_FO_PARAMS += fop1.extensions=1
 endif
 
 # AsciiDoc options
-ASCIIDOC_OPTIONS = --backend=docbook \
-  --doctype=$(ASCIIDOC_DOCTYPE)
+ASCIIDOC_OPTIONS = --backend=docbook
+if FORCE_ASCIIDOC_DOCTYPE
+ASCIIDOC_OPTIONS += --doctype=$(ASCIIDOC_DOCTYPE)
+endif
 if COMMENTS
 ASCIIDOC_OPTIONS += --attribute=showcomments
 endif

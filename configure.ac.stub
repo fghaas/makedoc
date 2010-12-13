@@ -105,10 +105,10 @@ AC_SUBST(ASCIIDOC_EXTENSION)
 
 AC_ARG_WITH([asciidoc-doctype],
     [AS_HELP_STRING([--with-asciidoc-type=article|book|manpage],
-       [assume this document type for AsciiDoc files (default article)])],
-	[ ASCIIDOC_DOCTYPE="$withval" ],
-	[ ASCIIDOC_DOCTYPE="article" ])
+       [force this document type for AsciiDoc files (this will override any document type set in the AsciiDoc source)])],
+	[ ASCIIDOC_DOCTYPE="$withval" ])
 AC_SUBST(ASCIIDOC_DOCTYPE)
+AM_CONDITIONAL(FORCE_ASCIIDOC_DOCTYPE, [test "x$ASCIIDOC_DOCTYPE" != "x"])
 
 AC_ARG_WITH([default-language],
     [AS_HELP_STRING([--with-default-language=LANG],
