@@ -305,7 +305,7 @@ endif
 if RENDER_MML
 %.svg: %.mml
 	$(MATHMLSVG) --font-size=24 $< 
-	$(SED)-i -e 's/<svg version="1"/<svg version="1.0"/' $@
+	$(SED) -i -e 's/<svg version="1"/<svg version="1.0"/' $@
 endif
 
 # Generated images: Encapsulated PostScript from SVG
