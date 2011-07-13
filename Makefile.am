@@ -87,6 +87,11 @@ XSLTPROC_HTML_OPTIONS = $(XSLTPROC_OPTIONS) \
 if PROFILING
 XSLTPROC_HTML_OPTIONS += $(XSLTPROC_PROFILING_OPTIONS)
 endif
+if HTML_IMAGE_SCALING
+XSLTPROC_HTML_OPTIONS += --param ignore.image.scaling 0
+else
+XSLTPROC_HTML_OPTIONS += --param ignore.image.scaling 1
+endif
 
 # xsltproc options for FO output
 XSLTPROC_FO_OPTIONS =  $(XSLTPROC_OPTIONS) \
@@ -136,6 +141,11 @@ SAXON_HTML_PARAMS = $(SAXON_PARAMS) \
  ulink.target='$(ULINK_TARGET)' \
  html.stylesheet='$(CSS)' \
  graphic.default.extension='png'
+if HTML_IMAGE_SCALING
+SAXON_HTML_PARAMS += ignore.image.scaling=0
+else
+SAXON_HTML_PARAMS += ignore.image.scaling=1
+endif
 
 SAXON_FO_PARAMS =  $(SAXON_PARAMS) \
  paper.type='$(PAPER_SIZE)' \
