@@ -98,8 +98,6 @@ XSLTPROC_FO_OPTIONS =  $(XSLTPROC_OPTIONS) \
  --stringparam paper.type $(PAPER_SIZE) \
  --stringparam body.font.family "$(FO_BODY_FONT_FAMILY)" \
  --stringparam title.font.family "$(FO_TITLE_FONT_FAMILY)" \
- --stringparam insert.link.page.number yes \
- --stringparam insert.xref.page.number yes \
  --stringparam graphic.default.extension svg \
  --stringparam generate.toc "$(FO_TOC)" \
  --param use.extensions 1 \
@@ -111,6 +109,11 @@ XSLTPROC_FO_OPTIONS += $(XSLTPROC_PROFILING_OPTIONS)
 endif
 if USE_FOP
 XSLTPROC_FO_OPTIONS += --param fop1.extensions 1
+endif
+if PDF_XREF_PAGENUM
+XSLTPROC_FO_OPTIONS +=
+ --stringparam insert.link.page.number yes \
+ --stringparam insert.xref.page.number yes
 endif
 
 # Saxon parameters
@@ -151,8 +154,6 @@ SAXON_FO_PARAMS =  $(SAXON_PARAMS) \
  paper.type='$(PAPER_SIZE)' \
  body.font.family='$(FO_BODY_FONT_FAMILY)' \
  title.font.family='$(FO_TITLE_FONT_FAMILY)' \
- insert.link.page.number='yes' \
- insert.xref.page.number='yes' \
  graphic.default.extension='svg' \
  generate.toc='$(FO_TOC)'\
  use.extensions=1 \
@@ -161,6 +162,10 @@ SAXON_FO_PARAMS =  $(SAXON_PARAMS) \
  admon.graphics.extension='.svg'
 if USE_FOP
 SAXON_FO_PARAMS += fop1.extensions=1
+endif
+if PDF_XREF_PAGENUM
+SAXON_FO_PARAMS += insert.link.page.number='yes' \
+ insert.xref.page.number='yes'
 endif
 
 # AsciiDoc options

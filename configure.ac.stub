@@ -77,6 +77,11 @@ AC_ARG_ENABLE([html-image-scaling],
 			[scale images in HTML output (default: disabled)])])
 AM_CONDITIONAL(HTML_IMAGE_SCALING, [ test "x$enable_html_image_scaling" = "xyes" ])
 
+AC_ARG_ENABLE([pdf-xref-pagenum],
+	[AS_HELP_STRING([--enable-pdf-xref-pagenum],
+			[enable page numbers for cross-references in PDF (default: disabled)])])
+AM_CONDITIONAL(PDF_XREF_PAGENUM, [ test "x$enable_pdf_xref_pagenum" = "xyes" ])
+
 AC_ARG_ENABLE([section-numbers],
 	[AS_HELP_STRING([--enable-section-numbers],
 			[enable section numbering (default: disabled)])])
