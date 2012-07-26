@@ -92,6 +92,9 @@ XSLTPROC_HTML_OPTIONS += --param ignore.image.scaling 0
 else
 XSLTPROC_HTML_OPTIONS += --param ignore.image.scaling 1
 endif
+if HTML_CHUNK
+XSLTPROC_HTML_OPTIONS += --param chunk.section.depth $(HTML_CHUNK_DEPTH)
+endif
 
 # xsltproc options for FO output
 XSLTPROC_FO_OPTIONS =  $(XSLTPROC_OPTIONS) \
@@ -148,6 +151,9 @@ if HTML_IMAGE_SCALING
 SAXON_HTML_PARAMS += ignore.image.scaling=0
 else
 SAXON_HTML_PARAMS += ignore.image.scaling=1
+endif
+if HTML_CHUNK
+SAXON_HTML_PARAMS += chunk.section.depth=$(HTML_CHUNK_DEPTH)
 endif
 
 SAXON_FO_PARAMS =  $(SAXON_PARAMS) \
@@ -210,6 +216,15 @@ if ENABLE_ASCIIDOC_DOCINFO
 %.xml: %.$(ASCIIDOC_EXTENSION) %-docinfo.xml
 else
 %.xml: %.$(ASCIIDOC_EXTENSION)
+endif
+	$(ASCIIDOC) --out-file=$@ \
+	$(ASCIIDOC_OPTIONS) $<
+
+# EPUB
+if ENABLE_ASCIIDOC_DOCINFO
+%.epub: %.$(ASCIIDOC_EXTENSION) %-docinfo.xml
+else
+%.epub: %.$(ASCIIDOC_EXTENSION)
 endif
 	$(ASCIIDOC) --out-file=$@ \
 	$(ASCIIDOC_OPTIONS) $<

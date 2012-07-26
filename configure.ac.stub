@@ -148,6 +148,13 @@ AC_ARG_WITH([html-flavor],
 	[ HTML_FLAVOR="xhtml" ])
 AC_SUBST(HTML_FLAVOR)
 
+AC_ARG_WITH([html-chunk-depth],
+    [AS_HELP_STRING([--with-html-chunk-depth=1],
+       [select section depth for which to create separate chunks (default 1)])],
+	[ HTML_CHUNK_DEPTH="$withval" ],
+	[ HTML_CHUNK_DEPTH="1" ])
+AC_SUBST(HTML_CHUNK_DEPTH)
+
 AC_ARG_WITH([xslt-processor],
     [AS_HELP_STRING([--with-xslt-processor=xsltproc|saxon-xslt],
        [use this processor for rendering DocBook XML to FO and HTML (default: xsltproc)])],
